@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tetris</title>
+    <title>Tetris - Play Free Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-color: #0f172a; /* Deep slate/blue background */
+            background-color: #0b132b; /* Deep rich blue */
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             user-select: none;
             -webkit-user-select: none;
         }
 
         .tetris-card {
-            background-color: #1e293b;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            background-color: #1c2541;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
         }
 
         canvas {
@@ -27,58 +27,222 @@
             touch-action: manipulation;
             user-select: none;
         }
+
+        /* Fake Ad Visual Effects */
+        @keyframes pulse-cta {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cta-pulse {
+            animation: pulse-cta 1.6s infinite ease-in-out;
+        }
+
+        @keyframes badge-flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .badge-flash {
+            animation: badge-flash 1s infinite;
+        }
+
+        .fake-ad-container {
+            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+            color: #0f172a;
+            position: relative;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4 text-white">
+<body class="min-h-screen flex flex-col items-center justify-start p-3 text-white overflow-x-hidden">
 
-    <!-- Container Centered on Screen -->
-    <div class="tetris-card p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-center md:items-start border border-slate-700/60 max-w-full">
-        
-        <!-- Main Game Canvas (10 cols x 20 rows at 30px per cell = 300x600) -->
-        <div class="relative rounded-lg overflow-hidden shadow-inner border border-slate-700">
-            <canvas id="tetris-canvas" width="300" height="600" class="bg-[#1a1f28]"></canvas>
-
-            <!-- Game Over Overlay -->
-            <div id="game-over-overlay" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center gap-4 hidden">
-                <h2 class="text-3xl font-extrabold text-red-500 tracking-wider">GAME OVER</h2>
-                <p class="text-slate-300 text-sm">Final Score: <span id="final-score" class="font-bold text-white">0</span></p>
-                <button id="restart-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-semibold rounded-lg shadow transition">
-                    Play Again
-                </button>
-            </div>
+    <!-- Top Mock Leaderboard Banner (728x90 style) -->
+    <header class="w-full max-w-5xl mb-4 flex flex-col items-center">
+        <div class="w-full text-right text-[10px] text-slate-400 pr-2 pb-0.5 tracking-wider uppercase flex justify-between items-center px-1">
+            <span class="flex items-center gap-1 font-mono text-cyan-400">⚡ FREE TETRIS ONLINE 2026 EDITION</span>
+            <span class="flex items-center gap-1 cursor-pointer">
+                <span>AdChoices</span>
+                <svg class="w-3 h-3 inline text-slate-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20L12 2zm0 3.8L18.5 19H5.5L12 5.8z"/></svg>
+            </span>
         </div>
 
-        <!-- Sidebar / Stats -->
-        <div class="flex flex-col gap-5 w-44">
-            
-            <!-- Score Card -->
-            <div class="bg-slate-800/90 rounded-xl p-4 border border-slate-700 text-center">
-                <span class="text-xs uppercase font-bold tracking-widest text-slate-400">Score</span>
-                <div id="score-display" class="text-3xl font-black text-amber-400 mt-1">0</div>
-            </div>
-
-            <!-- Next Piece Card -->
-            <div class="bg-slate-800/90 rounded-xl p-4 border border-slate-700 flex flex-col items-center">
-                <span class="text-xs uppercase font-bold tracking-widest text-slate-400 mb-2">Next</span>
-                <div class="w-[120px] h-[120px] flex items-center justify-center bg-[#1a1f28] rounded-lg border border-slate-700/60">
-                    <canvas id="next-canvas" width="120" height="120"></canvas>
+        <div class="fake-ad-container w-full rounded-lg border-2 border-amber-400/80 shadow-lg p-2.5 sm:px-4 sm:py-3 flex items-center justify-between gap-3 overflow-hidden">
+            <!-- Left Mock Graphic -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg bg-gradient-to-br from-amber-500 to-red-600 flex-shrink-0 flex items-center justify-center text-white font-black text-xl shadow">
+                    RAM!
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5 mb-0.5">
+                        <span class="bg-amber-400 text-black text-[9px] font-black px-1.5 py-0.5 rounded uppercase">SPONSORED</span>
+                        <span class="text-xs text-red-600 font-bold uppercase tracking-tight">Warning: PC Running Slow?</span>
+                    </div>
+                    <h2 class="text-xs sm:text-base font-extrabold text-slate-900 leading-tight">
+                        Download 128GB Cloud RAM For Free! (Speed Up Tetris By 990%)
+                    </h2>
+                    <p class="text-[11px] text-slate-600 hidden sm:block">
+                        Certified by tech experts. 0 MB file size, 100% instant browser memory injection.
+                    </p>
                 </div>
             </div>
 
-            <!-- Controls Help Card -->
-            <div class="bg-slate-800/60 rounded-xl p-3 border border-slate-700 text-xs text-slate-400 space-y-1.5">
-                <div class="flex justify-between"><span>← / →</span><span class="text-slate-200">Move</span></div>
-                <div class="flex justify-between"><span>↑</span><span class="text-slate-200">Rotate</span></div>
-                <div class="flex justify-between"><span>↓</span><span class="text-slate-200">Soft Drop</span></div>
-                <div class="flex justify-between"><span>Space</span><span class="text-slate-200">Hard Drop</span></div>
+            <!-- Fake Action Button -->
+            <div class="flex flex-col items-end flex-shrink-0">
+                <button class="cta-pulse bg-emerald-600 hover:bg-emerald-500 text-white font-black px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg text-xs sm:text-sm uppercase tracking-wide shadow-md border-b-4 border-emerald-800">
+                    START DOWNLOAD ►
+                </button>
+                <span class="text-[9px] text-slate-400 mt-0.5">100% Virus-Free*</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area: Left Skyscraper + Center Game + Right Skyscraper -->
+    <main class="w-full max-w-7xl flex flex-row items-center justify-center gap-4">
+
+        <!-- Left Fake Skyscraper Banner Ad (160x600 style) -->
+        <aside class="hidden xl:flex flex-col w-44 fake-ad-container rounded-xl border border-slate-300 p-3 shadow-2xl flex-shrink-0 justify-between self-stretch">
+            <div class="flex justify-between items-center text-[10px] text-slate-500 border-b pb-1">
+                <span class="bg-yellow-400 text-black font-bold px-1 rounded text-[8px]">AD</span>
+                <span>ⓘ AdChoices</span>
             </div>
 
-            <!-- Reset Button -->
-            <button id="quick-reset-btn" class="w-full py-2 bg-slate-700 hover:bg-slate-600 active:scale-95 text-xs uppercase tracking-wider font-semibold rounded-lg transition">
-                Restart Game
-            </button>
-        </div>
-    </div>
+            <div class="text-center py-2">
+                <span class="badge-flash inline-block bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full mb-1">
+                    NEARBY ALERT
+                </span>
+                <h3 class="font-black text-sm text-slate-900 leading-snug">
+                    Are Hot Single Tetrominoes In Your Area?
+                </h3>
+            </div>
+
+            <!-- Funny SVG Graphic: Lonely L-Piece -->
+            <div class="bg-slate-100 rounded-lg p-2 border border-slate-200 text-center shadow-inner">
+                <svg class="w-24 h-24 mx-auto" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="25" y="10" width="22" height="22" rx="4" fill="#2fe64e" stroke="#15803d" stroke-width="2"/>
+                    <rect x="25" y="34" width="22" height="22" rx="4" fill="#2fe64e" stroke="#15803d" stroke-width="2"/>
+                    <rect x="25" y="58" width="22" height="22" rx="4" fill="#2fe64e" stroke="#15803d" stroke-width="2"/>
+                    <rect x="49" y="58" width="22" height="22" rx="4" fill="#2fe64e" stroke="#15803d" stroke-width="2"/>
+                    <!-- Cute Eyes on Block -->
+                    <circle cx="32" cy="20" r="3" fill="#000"/>
+                    <circle cx="40" cy="20" r="3" fill="#000"/>
+                    <path d="M33 26 Q36 29 39 26" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <div class="text-xs font-bold text-slate-800 mt-1">"Green L", 2.4 miles away</div>
+                <div class="text-[10px] text-emerald-600 font-semibold">● Online Now looking to slot</div>
+            </div>
+
+            <div class="space-y-2 text-center mt-2">
+                <p class="text-[11px] text-slate-700 leading-tight">
+                    "Looking for an I-Piece to complete my 4-line clear... No O-Blocks please."
+                </p>
+                <button class="cta-pulse w-full bg-pink-600 hover:bg-pink-500 text-white font-extrabold py-2 px-2 rounded-lg text-xs tracking-tight shadow">
+                    MATCH NOW ❤️
+                </button>
+            </div>
+
+            <div class="text-[9px] text-slate-400 text-center border-t pt-1">
+                Sponsored by TetroDate Inc.
+            </div>
+        </aside>
+
+        <!-- CENTER: The Tetris Game Card -->
+        <section class="tetris-card p-5 sm:p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-center md:items-start border border-slate-700/80 shadow-2xl">
+            
+            <!-- Canvas Board (10 cols x 20 rows at 30px per cell = 300x600) -->
+            <div class="relative rounded-lg overflow-hidden shadow-inner border border-slate-700">
+                <canvas id="tetris-canvas" width="300" height="600" class="bg-[#1a1f28]"></canvas>
+
+                <!-- Game Over Overlay -->
+                <div id="game-over-overlay" class="absolute inset-0 bg-black/85 flex flex-col items-center justify-center gap-4 hidden z-20">
+                    <h2 class="text-3xl font-extrabold text-red-500 tracking-wider">GAME OVER</h2>
+                    <p class="text-slate-300 text-sm">Final Score: <span id="final-score" class="font-bold text-white">0</span></p>
+                    <button id="restart-btn" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-semibold rounded-lg shadow-lg transition">
+                        Play Again
+                    </button>
+                </div>
+            </div>
+
+            <!-- Game Sidebar: Score, Preview, Controls -->
+            <div class="flex flex-col gap-4 w-44">
+                
+                <!-- Score Panel -->
+                <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700 text-center shadow">
+                    <span class="text-xs uppercase font-bold tracking-widest text-slate-400">Score</span>
+                    <div id="score-display" class="text-3xl font-black text-amber-400 mt-1">0</div>
+                </div>
+
+                <!-- Next Block Preview -->
+                <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700 flex flex-col items-center shadow">
+                    <span class="text-xs uppercase font-bold tracking-widest text-slate-400 mb-2">Next</span>
+                    <div class="w-[120px] h-[120px] flex items-center justify-center bg-[#1a1f28] rounded-lg border border-slate-700/60 shadow-inner">
+                        <canvas id="next-canvas" width="120" height="120"></canvas>
+                    </div>
+                </div>
+
+                <!-- Controls Guide -->
+                <div class="bg-slate-800/60 rounded-xl p-3 border border-slate-700 text-xs text-slate-400 space-y-1">
+                    <div class="flex justify-between"><span>← / →</span><span class="text-slate-200">Move (Hold DAS)</span></div>
+                    <div class="flex justify-between"><span>↑</span><span class="text-slate-200">Rotate</span></div>
+                    <div class="flex justify-between"><span>↓</span><span class="text-slate-200">Soft Drop</span></div>
+                    <div class="flex justify-between"><span>Space</span><span class="text-slate-200">Hard Drop</span></div>
+                </div>
+
+                <!-- Reset Button -->
+                <button id="quick-reset-btn" class="w-full py-2 bg-slate-700 hover:bg-slate-600 active:scale-95 text-xs uppercase tracking-wider font-semibold rounded-lg transition shadow">
+                    Restart Game
+                </button>
+            </div>
+        </section>
+
+        <!-- Right Fake Skyscraper Banner Ad (160x600 style) -->
+        <aside class="hidden xl:flex flex-col w-44 fake-ad-container rounded-xl border border-slate-300 p-3 shadow-2xl flex-shrink-0 justify-between self-stretch">
+            <div class="flex justify-between items-center text-[10px] text-slate-500 border-b pb-1">
+                <span class="bg-yellow-400 text-black font-bold px-1 rounded text-[8px]">AD</span>
+                <span>ⓘ AdChoices</span>
+            </div>
+
+            <div class="text-center py-1">
+                <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded">
+                    SECRET TRICK 🤫
+                </span>
+                <h3 class="font-black text-sm text-slate-900 leading-snug mt-1">
+                    Local Grandma Clears 4 Lines With 1 Weird Herb!
+                </h3>
+            </div>
+
+            <!-- Funny Mock Graphic -->
+            <div class="bg-slate-100 rounded-lg p-2 border border-slate-200 text-center shadow-inner">
+                <svg class="w-20 h-20 mx-auto" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="45" r="30" fill="#fde047" stroke="#ca8a04" stroke-width="2"/>
+                    <!-- Grandma Glasses -->
+                    <circle cx="42" cy="42" r="7" stroke="#1e293b" stroke-width="2" fill="white"/>
+                    <circle cx="58" cy="42" r="7" stroke="#1e293b" stroke-width="2" fill="white"/>
+                    <line x1="49" y1="42" x2="51" y2="42" stroke="#1e293b" stroke-width="2"/>
+                    <path d="M43 55 Q50 62 57 55" stroke="#b91c1c" stroke-width="2" stroke-linecap="round"/>
+                    <!-- Floating Tetris blocks around head -->
+                    <rect x="15" y="15" width="10" height="10" fill="#a600f7" rx="1"/>
+                    <rect x="75" y="18" width="10" height="10" fill="#0d40d8" rx="1"/>
+                    <rect x="65" y="65" width="10" height="10" fill="#edea04" rx="1"/>
+                </svg>
+                <div class="flex justify-center text-amber-500 text-xs mt-1">★★★★★</div>
+                <div class="text-[10px] text-slate-600 font-semibold italic mt-0.5">"I went from 0 to 999,999 in 2 days" - Gertrude, 84</div>
+            </div>
+
+            <div class="space-y-2 text-center">
+                <p class="text-[11px] text-slate-700 leading-tight">
+                    World Champions are begging to take this down. Don't let Big Tetris hide it!
+                </p>
+                <button class="cta-pulse w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2 px-2 rounded-lg text-xs uppercase tracking-tight shadow border-b-2 border-amber-700">
+                    LEARN THE SECRET →
+                </button>
+            </div>
+
+            <div class="text-[9px] text-slate-400 text-center border-t pt-1">
+                Promoted by BlockSecrets.tv
+            </div>
+        </aside>
+
+    </main>
 
     <!-- Mobile Touch Controls -->
     <div class="grid grid-cols-4 gap-2 mt-4 md:hidden w-full max-w-[340px]">
@@ -89,8 +253,101 @@
         <button id="touch-down" class="btn-ctrl py-3 col-span-4 bg-slate-800 text-xl rounded-lg active:bg-slate-700 border border-slate-700">↓ SOFT DROP</button>
     </div>
 
+    <!-- Bottom Clickbait Native Ad Feed (3 humorous cards) -->
+    <section class="w-full max-w-5xl mt-6">
+        <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-xs uppercase font-extrabold tracking-widest text-slate-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                AROUND THE WEB (SPONSORED)
+            </span>
+            <span class="text-[10px] text-slate-500">AdChoices [x]</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            
+            <!-- Clickbait Card 1 -->
+            <div class="fake-ad-container rounded-xl overflow-hidden border border-slate-300 shadow hover:shadow-lg transition cursor-pointer flex flex-col justify-between p-3">
+                <div>
+                    <div class="relative bg-slate-200 rounded-lg h-32 flex items-center justify-center overflow-hidden mb-2">
+                        <svg class="w-24 h-24" viewBox="0 0 100 100" fill="none">
+                            <rect x="20" y="40" width="60" height="20" fill="#e27411" rx="2"/>
+                            <text x="50" y="30" font-size="28" text-anchor="middle">😱</text>
+                        </svg>
+                        <span class="absolute top-2 right-2 bg-red-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded">SHOCKING</span>
+                    </div>
+                    <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
+                        <span class="bg-amber-400 text-black px-1 rounded text-[8px] font-bold">AD</span>
+                        <span>BlockBuzz Magazine</span>
+                    </div>
+                    <h4 class="font-extrabold text-xs text-slate-900 leading-snug">
+                        10 Tetris Blocks That Grew Up To Be Unrecognizable (#4 Will Shock You)
+                    </h4>
+                </div>
+                <div class="mt-2 text-[10px] text-blue-600 font-semibold flex items-center justify-between">
+                    <span>Read Full Story</span>
+                    <span>→</span>
+                </div>
+            </div>
+
+            <!-- Clickbait Card 2 -->
+            <div class="fake-ad-container rounded-xl overflow-hidden border border-slate-300 shadow hover:shadow-lg transition cursor-pointer flex flex-col justify-between p-3">
+                <div>
+                    <div class="relative bg-gradient-to-r from-red-500 to-amber-500 rounded-lg h-32 flex flex-col items-center justify-center text-white p-2 text-center mb-2">
+                        <span class="text-3xl font-black mb-1">99.8%</span>
+                        <span class="text-[11px] font-bold uppercase tracking-wider">CANNOT PASS LEVEL 2</span>
+                        <span class="absolute top-2 right-2 bg-black/60 text-white font-mono text-[9px] px-1.5 py-0.5 rounded">TEST</span>
+                    </div>
+                    <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
+                        <span class="bg-amber-400 text-black px-1 rounded text-[8px] font-bold">AD</span>
+                        <span>BrainAge Pro Games</span>
+                    </div>
+                    <h4 class="font-extrabold text-xs text-slate-900 leading-snug">
+                        You Won't Last 5 Minutes Playing This Block Stacker Without Rage Quitting!
+                    </h4>
+                </div>
+                <div class="mt-2 text-[10px] text-blue-600 font-semibold flex items-center justify-between">
+                    <span>Play Free (No Install)</span>
+                    <span>→</span>
+                </div>
+            </div>
+
+            <!-- Clickbait Card 3 -->
+            <div class="fake-ad-container rounded-xl overflow-hidden border border-slate-300 shadow hover:shadow-lg transition cursor-pointer flex flex-col justify-between p-3 sm:col-span-2 md:col-span-1">
+                <div>
+                    <div class="relative bg-slate-800 rounded-lg h-32 flex items-center justify-center text-center p-2 mb-2">
+                        <div class="flex gap-1 items-end">
+                            <div class="w-4 h-12 bg-red-500 rounded-t"></div>
+                            <div class="w-4 h-20 bg-amber-400 rounded-t"></div>
+                            <div class="w-4 h-8 bg-blue-500 rounded-t"></div>
+                            <div class="w-4 h-24 bg-emerald-400 rounded-t"></div>
+                        </div>
+                        <span class="absolute top-2 right-2 bg-emerald-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded">NEW RULE</span>
+                    </div>
+                    <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
+                        <span class="bg-amber-400 text-black px-1 rounded text-[8px] font-bold">AD</span>
+                        <span>TetroFinancial LLC</span>
+                    </div>
+                    <h4 class="font-extrabold text-xs text-slate-900 leading-snug">
+                        Homeowners In Your County Are Stacking Blocks To Eliminate Mortgage Debt!
+                    </h4>
+                </div>
+                <div class="mt-2 text-[10px] text-blue-600 font-semibold flex items-center justify-between">
+                    <span>Check Eligibility</span>
+                    <span>→</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer Disclaimer -->
+    <footer class="mt-6 text-center text-[10px] text-slate-500 max-w-xl pb-6">
+        *Disclaimer: All advertisements are entirely satirical parodies. Do not attempt to download physical RAM from the web.
+    </footer>
+
+    <!-- Game Script (Complete mechanics: grid lines, DAS, lock delay, hard drop, scoring) -->
     <script>
-        // Palette matching your Python colors
+        // Palette matching your previous Python colors
         const COLORS = [
             '#1a1f28', // 0: Empty cell background
             '#2fe64e', // 1: L-Block (Green)
@@ -101,7 +358,7 @@
             '#15ccd1', // 6: T-Block (Cyan)
             '#0d40d8'  // 7: Z-Block (Blue)
         ];
-        const GRID_LINE_COLOR = '#2c2c7f'; // Grid separation outline
+        const GRID_LINE_COLOR = '#2c2c7f'; // Grid separation border color
 
         const ROWS = 20;
         const COLS = 10;
@@ -230,7 +487,7 @@
                 this.nextPiece = this.nextRandomPiece();
 
                 this.normalDropInterval = 300; // ms per drop
-                this.fastDropInterval = 50;   // ms when down arrow held
+                this.fastDropInterval = 50;   // ms on soft drop
                 this.dropInterval = this.normalDropInterval;
                 this.lastDropTime = performance.now();
 
@@ -246,7 +503,6 @@
             nextRandomPiece() {
                 if (this.bag.length === 0) {
                     this.bag = [1, 2, 3, 4, 5, 6, 7];
-                    // Fisher-Yates shuffle
                     for (let i = this.bag.length - 1; i > 0; i--) {
                         const j = Math.floor(Math.random() * (i + 1));
                         [this.bag[i], this.bag[j]] = [this.bag[j], this.bag[i]];
@@ -299,12 +555,12 @@
                 if (this.gameOver) return;
                 this.currentPiece.rotate();
                 if (!this.isValid(this.currentPiece)) {
-                    // Simple wall kick attempt: try shift 1 left or 1 right
+                    // Quick wall-kick helper: shift 1 left or 1 right
                     this.currentPiece.col += 1;
                     if (!this.isValid(this.currentPiece)) {
                         this.currentPiece.col -= 2;
                         if (!this.isValid(this.currentPiece)) {
-                            this.currentPiece.col += 1; // restore
+                            this.currentPiece.col += 1;
                             this.currentPiece.undoRotate();
                             return;
                         }
@@ -314,7 +570,6 @@
             }
 
             handlePieceInteraction() {
-                // If touching bottom/blocks, reset lock timer giving player grace time
                 if (!this.canMoveDown()) {
                     this.lockTimerStart = performance.now();
                 } else {
@@ -356,7 +611,6 @@
                 this.lockTimerStart = null;
                 this.drawNextPiece();
 
-                // Check game over
                 if (!this.isValid(this.currentPiece)) {
                     this.gameOver = true;
                     this.finalScore.textContent = this.score;
@@ -371,7 +625,7 @@
                         this.grid.splice(r, 1);
                         this.grid.unshift(Array(COLS).fill(0));
                         lines++;
-                        r++; // check same row index again after shift
+                        r++;
                     }
                 }
                 if (lines > 0) {
@@ -384,13 +638,11 @@
             update(now) {
                 if (this.gameOver) return;
 
-                // Handle natural gravity drop
                 if (now - this.lastDropTime > this.dropInterval) {
                     this.moveDown();
                     this.lastDropTime = now;
                 }
 
-                // Handle lock delay countdown
                 if (this.lockTimerStart !== null) {
                     if (this.canMoveDown()) {
                         this.lockTimerStart = null;
@@ -404,16 +656,15 @@
                 const ctx = this.ctx;
                 ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-                // Grid background / line separator color
+                // Grid background / line outline color
                 ctx.fillStyle = GRID_LINE_COLOR;
                 ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-                // Draw settled cells
+                // Draw cells with 1px border spacing
                 for (let r = 0; r < ROWS; r++) {
                     for (let c = 0; c < COLS; c++) {
                         const val = this.grid[r][c];
                         ctx.fillStyle = COLORS[val];
-                        // 1px border gap for visible grid lines
                         ctx.fillRect(c * CELL_SIZE + 1, r * CELL_SIZE + 1, CELL_SIZE - 1, CELL_SIZE - 1);
                     }
                 }
@@ -439,7 +690,6 @@
                 const shape = this.nextPiece.shapes[0];
                 const pieceSize = 22;
 
-                // Determine bounding box to center in 120x120 canvas
                 let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
                 shape.forEach(t => {
                     minR = Math.min(minR, t.r);
@@ -472,8 +722,8 @@
         // -------------------------------------------------------------
         const keysHeld = {};
         const dasTimers = {};
-        const DAS_INITIAL_DELAY = 180; // ms before continuous sliding starts
-        const DAS_REPEAT_RATE = 50;    // ms between sliding steps
+        const DAS_INITIAL_DELAY = 180; // ms delay before continuous repeat
+        const DAS_REPEAT_RATE = 50;    // ms between shifts while holding
 
         function startKeyAction(key, action) {
             action();
@@ -489,7 +739,6 @@
         }
 
         window.addEventListener('keydown', (e) => {
-            // Prevent default scroll behavior for game navigation keys
             if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)) {
                 e.preventDefault();
             }
@@ -501,7 +750,7 @@
                 return;
             }
 
-            if (keysHeld[e.key]) return; // ignore repeated OS events
+            if (keysHeld[e.key]) return;
             keysHeld[e.key] = true;
 
             if (e.key === 'ArrowLeft') {
@@ -531,7 +780,7 @@
         document.getElementById('restart-btn').addEventListener('click', () => game.init());
         document.getElementById('quick-reset-btn').addEventListener('click', () => game.init());
 
-        // Touch buttons for mobile devices
+        // Mobile touch controls
         const bindTouch = (id, onStart, onEnd) => {
             const btn = document.getElementById(id);
             btn.addEventListener('touchstart', (e) => { e.preventDefault(); onStart(); });
