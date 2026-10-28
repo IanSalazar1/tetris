@@ -62,16 +62,17 @@
             <span class="flex items-center gap-1 font-mono text-cyan-400">⚡ FREE TETRIS ONLINE 2026 EDITION</span>
             <span class="flex items-center gap-1 cursor-pointer">
                 <span>AdChoices</span>
-                <svg class="w-3 h-3 inline text-slate-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20L12 2zm0 3.8L18.5 19H5.5L12 5.8z"/></svg>
+                <img src="https://placehold.co/12x12/94a3b8/ffffff?text=%3F" alt="AdChoices Info" class="w-3 h-3 inline rounded-sm object-cover" onerror="this.src='https://placehold.co/12x12/94a3b8/ffffff?text=%3F'">
             </span>
         </div>
 
         <div class="fake-ad-container w-full rounded-lg border-2 border-amber-400/80 shadow-lg p-2.5 sm:px-4 sm:py-3 flex items-center justify-between gap-3 overflow-hidden">
             <!-- Left Mock Graphic -->
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg bg-gradient-to-br from-amber-500 to-red-600 flex-shrink-0 flex items-center justify-center text-white font-black text-xl shadow">
-                    RAM!
-                </div>
+                <img src="https://placehold.co/80x80/ea580c/ffffff?text=128GB+RAM" 
+                     alt="Cloud RAM Download Icon" 
+                     class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover shadow flex-shrink-0"
+                     onerror="this.src='https://placehold.co/80x80/ea580c/ffffff?text=RAM'">
                 <div>
                     <div class="flex items-center gap-1.5 mb-0.5">
                         <span class="bg-amber-400 text-black text-[9px] font-black px-1.5 py-0.5 rounded uppercase">SPONSORED</span>
@@ -115,19 +116,13 @@
                 </h3>
             </div>
 
-            <!-- Funny SVG Graphic: Lonely L-Piece -->
-            <div class="bg-slate-100 rounded-lg p-2 border border-slate-200 text-center shadow-inner">
-                <svg class="w-24 h-24 mx-auto" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="25" y="10" width="22" height="22" rx="4" fill="#2fe64e" stroke="#15803d" stroke-width="2"/>
-                    <rect x="25" y="34" width="22" height="22" rx="4" fill="#2fe64e" stroke="#15803d" stroke-width="2"/>
-                    <rect x="25" y="58" width="22" height="22" rx="4" fill="#2fe64e" stroke="#15803d" stroke-width="2"/>
-                    <rect x="49" y="58" width="22" height="22" rx="4" fill="#2fe64e" stroke="#15803d" stroke-width="2"/>
-                    <!-- Cute Eyes on Block -->
-                    <circle cx="32" cy="20" r="3" fill="#000"/>
-                    <circle cx="40" cy="20" r="3" fill="#000"/>
-                    <path d="M33 26 Q36 29 39 26" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                <div class="text-xs font-bold text-slate-800 mt-1">"Green L", 2.4 miles away</div>
+            <!-- Ad Picture -->
+            <div class="bg-slate-100 rounded-lg p-2 border border-slate-200 text-center shadow-inner overflow-hidden">
+                <img src="https://placehold.co/140x140/22c55e/ffffff?text=Green+L-Piece" 
+                     alt="Single Tetromino Dating Profile" 
+                     class="w-full h-28 object-cover rounded shadow"
+                     onerror="this.src='https://placehold.co/140x140/22c55e/ffffff?text=Block'">
+                <div class="text-xs font-bold text-slate-800 mt-1.5">"Green L", 2.4 miles away</div>
                 <div class="text-[10px] text-emerald-600 font-semibold">● Online Now looking to slot</div>
             </div>
 
@@ -151,6 +146,21 @@
             <!-- Canvas Board (10 cols x 20 rows at 30px per cell = 300x600) -->
             <div class="relative rounded-lg overflow-hidden shadow-inner border border-slate-700">
                 <canvas id="tetris-canvas" width="300" height="600" class="bg-[#1a1f28]"></canvas>
+
+                <!-- Pause Menu Overlay -->
+                <div id="pause-overlay" class="absolute inset-0 bg-slate-950/85 backdrop-blur-sm flex flex-col items-center justify-center gap-4 hidden z-20">
+                    <h2 class="text-2xl font-extrabold text-amber-400 tracking-wider">GAME PAUSED</h2>
+                    <p class="text-xs text-slate-300">Take a breath or grab a snack!</p>
+                    <div class="flex flex-col gap-2.5 w-44 mt-2">
+                        <button id="resume-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold rounded-lg shadow-lg transition text-sm">
+                            Resume Game
+                        </button>
+                        <button id="pause-restart-btn" class="w-full py-2 bg-slate-700 hover:bg-slate-600 active:scale-95 text-white font-semibold rounded-lg shadow transition text-xs">
+                            Restart
+                        </button>
+                    </div>
+                    <span class="text-[11px] text-slate-400 mt-2">Press <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-600 text-white font-mono">P</kbd> or <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-600 text-white font-mono">Esc</kbd> to unpause</span>
+                </div>
 
                 <!-- Game Over Overlay -->
                 <div id="game-over-overlay" class="absolute inset-0 bg-black/85 flex flex-col items-center justify-center gap-4 hidden z-20">
@@ -179,12 +189,19 @@
                     </div>
                 </div>
 
+                <!-- Pause / Resume Button -->
+                <button id="toggle-pause-btn" class="w-full py-2 bg-amber-600 hover:bg-amber-500 active:scale-95 text-xs uppercase tracking-wider font-bold rounded-lg transition shadow flex items-center justify-center gap-1.5">
+                    <span id="pause-btn-icon">⏸</span>
+                    <span id="pause-btn-text">Pause Game</span>
+                </button>
+
                 <!-- Controls Guide -->
                 <div class="bg-slate-800/60 rounded-xl p-3 border border-slate-700 text-xs text-slate-400 space-y-1">
-                    <div class="flex justify-between"><span>← / →</span><span class="text-slate-200">Move (Hold DAS)</span></div>
+                    <div class="flex justify-between"><span>← / →</span><span class="text-slate-200">Move (Hold)</span></div>
                     <div class="flex justify-between"><span>↑</span><span class="text-slate-200">Rotate</span></div>
                     <div class="flex justify-between"><span>↓</span><span class="text-slate-200">Soft Drop</span></div>
                     <div class="flex justify-between"><span>Space</span><span class="text-slate-200">Hard Drop</span></div>
+                    <div class="flex justify-between"><span>P / Esc</span><span class="text-slate-200">Pause</span></div>
                 </div>
 
                 <!-- Reset Button -->
@@ -210,20 +227,12 @@
                 </h3>
             </div>
 
-            <!-- Funny Mock Graphic -->
-            <div class="bg-slate-100 rounded-lg p-2 border border-slate-200 text-center shadow-inner">
-                <svg class="w-20 h-20 mx-auto" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="45" r="30" fill="#fde047" stroke="#ca8a04" stroke-width="2"/>
-                    <!-- Grandma Glasses -->
-                    <circle cx="42" cy="42" r="7" stroke="#1e293b" stroke-width="2" fill="white"/>
-                    <circle cx="58" cy="42" r="7" stroke="#1e293b" stroke-width="2" fill="white"/>
-                    <line x1="49" y1="42" x2="51" y2="42" stroke="#1e293b" stroke-width="2"/>
-                    <path d="M43 55 Q50 62 57 55" stroke="#b91c1c" stroke-width="2" stroke-linecap="round"/>
-                    <!-- Floating Tetris blocks around head -->
-                    <rect x="15" y="15" width="10" height="10" fill="#a600f7" rx="1"/>
-                    <rect x="75" y="18" width="10" height="10" fill="#0d40d8" rx="1"/>
-                    <rect x="65" y="65" width="10" height="10" fill="#edea04" rx="1"/>
-                </svg>
+            <!-- Ad Picture -->
+            <div class="bg-slate-100 rounded-lg p-2 border border-slate-200 text-center shadow-inner overflow-hidden">
+                <img src="https://placehold.co/140x140/facc15/000000?text=Grandma+Gertrude" 
+                     alt="Grandma Tetris Champion" 
+                     class="w-full h-24 object-cover rounded shadow"
+                     onerror="this.src='https://placehold.co/140x140/facc15/000000?text=Champion'">
                 <div class="flex justify-center text-amber-500 text-xs mt-1">★★★★★</div>
                 <div class="text-[10px] text-slate-600 font-semibold italic mt-0.5">"I went from 0 to 999,999 in 2 days" - Gertrude, 84</div>
             </div>
@@ -268,12 +277,12 @@
             <!-- Clickbait Card 1 -->
             <div class="fake-ad-container rounded-xl overflow-hidden border border-slate-300 shadow hover:shadow-lg transition cursor-pointer flex flex-col justify-between p-3">
                 <div>
-                    <div class="relative bg-slate-200 rounded-lg h-32 flex items-center justify-center overflow-hidden mb-2">
-                        <svg class="w-24 h-24" viewBox="0 0 100 100" fill="none">
-                            <rect x="20" y="40" width="60" height="20" fill="#e27411" rx="2"/>
-                            <text x="50" y="30" font-size="28" text-anchor="middle">😱</text>
-                        </svg>
-                        <span class="absolute top-2 right-2 bg-red-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded">SHOCKING</span>
+                    <div class="relative rounded-lg h-32 overflow-hidden mb-2 bg-slate-100">
+                        <img src="https://placehold.co/300x180/f97316/ffffff?text=Shocking+Blocks" 
+                             alt="Tetris Blocks Grew Up" 
+                             class="w-full h-full object-cover"
+                             onerror="this.src='https://placehold.co/300x180/f97316/ffffff?text=News'">
+                        <span class="absolute top-2 right-2 bg-red-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded shadow">SHOCKING</span>
                     </div>
                     <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
                         <span class="bg-amber-400 text-black px-1 rounded text-[8px] font-bold">AD</span>
@@ -292,9 +301,11 @@
             <!-- Clickbait Card 2 -->
             <div class="fake-ad-container rounded-xl overflow-hidden border border-slate-300 shadow hover:shadow-lg transition cursor-pointer flex flex-col justify-between p-3">
                 <div>
-                    <div class="relative bg-gradient-to-r from-red-500 to-amber-500 rounded-lg h-32 flex flex-col items-center justify-center text-white p-2 text-center mb-2">
-                        <span class="text-3xl font-black mb-1">99.8%</span>
-                        <span class="text-[11px] font-bold uppercase tracking-wider">CANNOT PASS LEVEL 2</span>
+                    <div class="relative rounded-lg h-32 overflow-hidden mb-2 bg-slate-100">
+                        <img src="https://placehold.co/300x180/dc2626/ffffff?text=99.8%25+Rage+Quit" 
+                             alt="Rage Quit Game Test" 
+                             class="w-full h-full object-cover"
+                             onerror="this.src='https://placehold.co/300x180/dc2626/ffffff?text=Test'">
                         <span class="absolute top-2 right-2 bg-black/60 text-white font-mono text-[9px] px-1.5 py-0.5 rounded">TEST</span>
                     </div>
                     <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
@@ -314,14 +325,12 @@
             <!-- Clickbait Card 3 -->
             <div class="fake-ad-container rounded-xl overflow-hidden border border-slate-300 shadow hover:shadow-lg transition cursor-pointer flex flex-col justify-between p-3 sm:col-span-2 md:col-span-1">
                 <div>
-                    <div class="relative bg-slate-800 rounded-lg h-32 flex items-center justify-center text-center p-2 mb-2">
-                        <div class="flex gap-1 items-end">
-                            <div class="w-4 h-12 bg-red-500 rounded-t"></div>
-                            <div class="w-4 h-20 bg-amber-400 rounded-t"></div>
-                            <div class="w-4 h-8 bg-blue-500 rounded-t"></div>
-                            <div class="w-4 h-24 bg-emerald-400 rounded-t"></div>
-                        </div>
-                        <span class="absolute top-2 right-2 bg-emerald-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded">NEW RULE</span>
+                    <div class="relative rounded-lg h-32 overflow-hidden mb-2 bg-slate-100">
+                        <img src="https://placehold.co/300x180/0284c7/ffffff?text=Stack+Blocks+Pay+Debt" 
+                             alt="Mortgage Debt Elimination" 
+                             class="w-full h-full object-cover"
+                             onerror="this.src='https://placehold.co/300x180/0284c7/ffffff?text=Finance'">
+                        <span class="absolute top-2 right-2 bg-emerald-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded shadow">NEW RULE</span>
                     </div>
                     <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
                         <span class="bg-amber-400 text-black px-1 rounded text-[8px] font-bold">AD</span>
@@ -472,6 +481,10 @@
                 this.scoreDisplay = document.getElementById('score-display');
                 this.finalScore = document.getElementById('final-score');
                 this.gameOverOverlay = document.getElementById('game-over-overlay');
+                this.pauseOverlay = document.getElementById('pause-overlay');
+                this.pauseBtn = document.getElementById('toggle-pause-btn');
+                this.pauseBtnText = document.getElementById('pause-btn-text');
+                this.pauseBtnIcon = document.getElementById('pause-btn-icon');
 
                 this.bag = [];
                 this.init();
@@ -481,6 +494,7 @@
                 this.grid = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
                 this.score = 0;
                 this.gameOver = false;
+                this.isPaused = false;
                 this.bag = [];
 
                 this.currentPiece = this.nextRandomPiece();
@@ -494,10 +508,49 @@
                 // Lock delay state
                 this.lockDelay = 500; // ms
                 this.lockTimerStart = null;
+                this.remainingLockDelay = this.lockDelay;
 
                 this.scoreDisplay.textContent = '0';
                 this.gameOverOverlay.classList.add('hidden');
+                this.pauseOverlay.classList.add('hidden');
+                this.updatePauseButtonUI();
                 this.drawNextPiece();
+            }
+
+            togglePause() {
+                if (this.gameOver) return;
+
+                this.isPaused = !this.isPaused;
+                if (this.isPaused) {
+                    this.pauseOverlay.classList.remove('hidden');
+                    // Store elapsed lock delay to resume fairly
+                    if (this.lockTimerStart !== null) {
+                        const elapsed = performance.now() - this.lockTimerStart;
+                        this.remainingLockDelay = Math.max(0, this.lockDelay - elapsed);
+                    }
+                } else {
+                    this.pauseOverlay.classList.add('hidden');
+                    // Reset interval base and lock timer to current time
+                    this.lastDropTime = performance.now();
+                    if (this.lockTimerStart !== null) {
+                        this.lockTimerStart = performance.now() - (this.lockDelay - this.remainingLockDelay);
+                    }
+                }
+                this.updatePauseButtonUI();
+            }
+
+            updatePauseButtonUI() {
+                if (this.pauseBtnIcon && this.pauseBtnText) {
+                    if (this.isPaused) {
+                        this.pauseBtnIcon.textContent = '▶';
+                        this.pauseBtnText.textContent = 'Resume Game';
+                    } else {
+                        this.pauseBtnIcon.textContent = '⏸';
+                        this.pauseBtnText.textContent = 'Pause Game';
+                    }
+                } else if (this.pauseBtn) {
+                    this.pauseBtn.textContent = this.isPaused ? '▶ Resume Game' : '⏸ Pause Game';
+                }
             }
 
             nextRandomPiece() {
@@ -532,7 +585,7 @@
             }
 
             moveLeft() {
-                if (this.gameOver) return;
+                if (this.gameOver || this.isPaused) return;
                 this.currentPiece.col -= 1;
                 if (!this.isValid(this.currentPiece)) {
                     this.currentPiece.col += 1;
@@ -542,7 +595,7 @@
             }
 
             moveRight() {
-                if (this.gameOver) return;
+                if (this.gameOver || this.isPaused) return;
                 this.currentPiece.col += 1;
                 if (!this.isValid(this.currentPiece)) {
                     this.currentPiece.col -= 1;
@@ -552,7 +605,7 @@
             }
 
             rotate() {
-                if (this.gameOver) return;
+                if (this.gameOver || this.isPaused) return;
                 this.currentPiece.rotate();
                 if (!this.isValid(this.currentPiece)) {
                     // Quick wall-kick helper: shift 1 left or 1 right
@@ -578,7 +631,7 @@
             }
 
             moveDown() {
-                if (this.gameOver) return;
+                if (this.gameOver || this.isPaused) return;
                 if (this.canMoveDown()) {
                     this.currentPiece.row += 1;
                     this.lockTimerStart = null;
@@ -590,7 +643,7 @@
             }
 
             hardDrop() {
-                if (this.gameOver) return;
+                if (this.gameOver || this.isPaused) return;
                 while (this.canMoveDown()) {
                     this.currentPiece.row += 1;
                 }
@@ -636,7 +689,7 @@
             }
 
             update(now) {
-                if (this.gameOver) return;
+                if (this.gameOver || this.isPaused) return;
 
                 if (now - this.lastDropTime > this.dropInterval) {
                     this.moveDown();
@@ -739,6 +792,13 @@
         }
 
         window.addEventListener('keydown', (e) => {
+            // Handle pause hotkeys
+            if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
+                e.preventDefault();
+                game.togglePause();
+                return;
+            }
+
             if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)) {
                 e.preventDefault();
             }
@@ -749,6 +809,8 @@
                 }
                 return;
             }
+
+            if (game.isPaused) return;
 
             if (keysHeld[e.key]) return;
             keysHeld[e.key] = true;
@@ -776,7 +838,13 @@
             }
         });
 
-        // UI Reset buttons
+        // UI Pause & Reset buttons
+        const togglePauseBtn = document.getElementById('toggle-pause-btn');
+        if (togglePauseBtn) {
+            togglePauseBtn.addEventListener('click', () => game.togglePause());
+        }
+        document.getElementById('resume-btn').addEventListener('click', () => game.togglePause());
+        document.getElementById('pause-restart-btn').addEventListener('click', () => game.init());
         document.getElementById('restart-btn').addEventListener('click', () => game.init());
         document.getElementById('quick-reset-btn').addEventListener('click', () => game.init());
 
