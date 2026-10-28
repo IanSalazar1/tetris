@@ -76,20 +76,19 @@
                 <div>
                     <div class="flex items-center gap-1.5 mb-0.5">
                         <span class="bg-amber-400 text-black text-[9px] font-black px-1.5 py-0.5 rounded uppercase">SPONSORED</span>
-                        <span class="text-xs text-red-600 font-bold uppercase tracking-tight">Warning: PC Running Slow?</span>
                     </div>
                     <h2 class="text-xs sm:text-base font-extrabold text-slate-900 leading-tight">
-                        Download 128GB Cloud RAM For Free! (Speed Up Tetris By 990%)
+                        Get Minecraft For Completely Free!!!
                     </h2>
                     <p class="text-[11px] text-slate-600 hidden sm:block">
-                        Certified by tech experts. 0 MB file size, 100% instant browser memory injection.
+                        Not a Scam! 10% Legit.
                     </p>
                 </div>
             </div>
 
             <!-- Fake Action Button -->
             <div class="flex flex-col items-end flex-shrink-0">
-                <button class="cta-pulse bg-emerald-600 hover:bg-emerald-500 text-white font-black px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg text-xs sm:text-sm uppercase tracking-wide shadow-md border-b-4 border-emerald-800">
+                <button id="download-ad-btn" class="cta-pulse bg-emerald-600 hover:bg-emerald-500 text-white font-black px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg text-xs sm:text-sm uppercase tracking-wide shadow-md border-b-4 border-emerald-800">
                     START DOWNLOAD ►
                 </button>
                 <span class="text-[9px] text-slate-400 mt-0.5">100% Virus-Free*</span>
@@ -118,25 +117,21 @@
 
             <!-- Ad Picture -->
             <div class="bg-slate-100 rounded-lg p-2 border border-slate-200 text-center shadow-inner overflow-hidden">
-                <img src="https://placehold.co/140x140/22c55e/ffffff?text=Green+L-Piece" 
+                <img src="https://res.cloudinary.com/dtz0urit6/image/upload/q_auto:best,f_jpg/cloudinary-tools-uploads/wmahqisvocv4kzexl4hve" 
                      alt="Single Tetromino Dating Profile" 
                      class="w-full h-28 object-cover rounded shadow"
                      onerror="this.src='https://placehold.co/140x140/22c55e/ffffff?text=Block'">
-                <div class="text-xs font-bold text-slate-800 mt-1.5">"Green L", 2.4 miles away</div>
-                <div class="text-[10px] text-emerald-600 font-semibold">● Online Now looking to slot</div>
+                <div class="text-xs font-bold text-slate-800 mt-1.5">"Ian", 0 miles away</div>
+                <div class="text-[10px] text-emerald-600 font-semibold">● Online Now</div>
             </div>
 
             <div class="space-y-2 text-center mt-2">
                 <p class="text-[11px] text-slate-700 leading-tight">
-                    "Looking for an I-Piece to complete my 4-line clear... No O-Blocks please."
+                    "Looking for a 20-year-old Filipina to date."
                 </p>
                 <button class="cta-pulse w-full bg-pink-600 hover:bg-pink-500 text-white font-extrabold py-2 px-2 rounded-lg text-xs tracking-tight shadow">
                     MATCH NOW ❤️
                 </button>
-            </div>
-
-            <div class="text-[9px] text-slate-400 text-center border-t pt-1">
-                Sponsored by TetroDate Inc.
             </div>
         </aside>
 
@@ -353,6 +348,41 @@
     <footer class="mt-6 text-center text-[10px] text-slate-500 max-w-xl pb-6">
         *Disclaimer: All advertisements are entirely satirical parodies. Do not attempt to download physical RAM from the web.
     </footer>
+
+    <!-- Fake Ad Pop-up Modal -->
+    <div id="ad-popup-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border-2 border-amber-400 rounded-2xl max-w-md w-full p-6 text-center shadow-2xl relative transform transition-all animate-bounce-short">
+            <!-- Close 'X' Button -->
+            <button id="popup-close-x" class="absolute top-3 right-3 text-slate-400 hover:text-white text-xl font-bold w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-800 transition">
+                ✕
+            </button>
+
+            <!-- Warning Icon / Header -->
+            <div class="w-16 h-16 bg-amber-500/20 text-amber-400 border border-amber-400/40 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
+                ⚠️
+            </div>
+
+            <h3 class="text-xl font-black text-white tracking-wide mb-2 uppercase">
+                Downloading 128GB Cloud RAM...
+            </h3>
+
+            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                <strong class="text-red-400">WARNING: System Overload!</strong><br>
+                Your browser is injecting high-density quantum RAM into your CPU socket. Tetris block velocity may increase by 990%!
+            </p>
+
+            <div class="bg-slate-800/80 rounded-lg p-3 text-left font-mono text-xs text-emerald-400 border border-slate-700 mb-5 space-y-1">
+                <div>> Initializing cloud memory banks... [OK]</div>
+                <div>> Bypassing physical hardware limits... [OK]</div>
+                <div>> Warning: 0 bytes downloaded (It's a fake ad!)</div>
+            </div>
+
+            <!-- Action / Dismiss Button -->
+            <button id="popup-ok-btn" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black rounded-lg uppercase tracking-wider text-sm transition shadow-lg">
+                I Understand (Close)
+            </button>
+        </div>
+    </div>
 
     <!-- Game Script (Complete mechanics: grid lines, DAS, lock delay, hard drop, scoring) -->
     <script>
@@ -847,6 +877,38 @@
         document.getElementById('pause-restart-btn').addEventListener('click', () => game.init());
         document.getElementById('restart-btn').addEventListener('click', () => game.init());
         document.getElementById('quick-reset-btn').addEventListener('click', () => game.init());
+
+        // Fake Ad Pop-up Logic
+        const downloadBtn = document.getElementById('download-ad-btn');
+        const adModal = document.getElementById('ad-popup-modal');
+        const popupCloseX = document.getElementById('popup-close-x');
+        const popupOkBtn = document.getElementById('popup-ok-btn');
+
+        function openAdModal() {
+            adModal.classList.remove('hidden');
+        }
+
+        function closeAdModal() {
+            adModal.classList.add('hidden');
+        }
+
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', openAdModal);
+        }
+        if (popupCloseX) {
+            popupCloseX.addEventListener('click', closeAdModal);
+        }
+        if (popupOkBtn) {
+            popupOkBtn.addEventListener('click', closeAdModal);
+        }
+        // Close modal if user clicks outside of the dialogue box
+        if (adModal) {
+            adModal.addEventListener('click', (e) => {
+                if (e.target === adModal) {
+                    closeAdModal();
+                }
+            });
+        }
 
         // Mobile touch controls
         const bindTouch = (id, onStart, onEnd) => {
