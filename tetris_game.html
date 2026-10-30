@@ -1,934 +1,862 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tetris - Play Free Online</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background-color: #0b132b; /* Deep rich blue */
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .tetris-card {
-            background-color: #1c2541;
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-        }
-
-        canvas {
-            display: block;
-            image-rendering: pixelated;
-        }
-
-        .btn-ctrl {
-            touch-action: manipulation;
-            user-select: none;
-        }
-
-        /* Fake Ad Visual Effects */
-        @keyframes pulse-cta {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .cta-pulse {
-            animation: pulse-cta 1.6s infinite ease-in-out;
-        }
-
-        @keyframes badge-flash {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .badge-flash {
-            animation: badge-flash 1s infinite;
-        }
-
-        .fake-ad-container {
-            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-            color: #0f172a;
-            position: relative;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom styling for retro scrollbars and pixelated look */
+    body {
+      background-color: #0d1b2a;
+      user-select: none;
+    }
+    .ad-banner-shimmer {
+      background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2.5s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start p-3 text-white overflow-x-hidden">
+<body class="text-slate-100 flex flex-col items-center min-h-screen p-2 md:p-4 font-sans">
 
-    <!-- Top Mock Leaderboard Banner (728x90 style) -->
-    <header class="w-full max-w-5xl mb-4 flex flex-col items-center">
-        <div class="w-full text-right text-[10px] text-slate-400 pr-2 pb-0.5 tracking-wider uppercase flex justify-between items-center px-1">
-            <span class="flex items-center gap-1 font-mono text-cyan-400">⚡ FREE TETRIS ONLINE 2026 EDITION</span>
-            <span class="flex items-center gap-1 cursor-pointer">
-                <span>AdChoices</span>
-                <img src="https://gcdnb.pbrd.co/images/WHZWeLJmOiwr.jpg" alt="AdChoices Info" class="w-3 h-3 inline rounded-sm object-cover">
-            </span>
+  <!-- TOP AD BANNER -->
+  <header class="w-full max-w-5xl mb-4">
+    <div class="relative bg-slate-800/90 border-2 border-dashed border-amber-500/60 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg overflow-hidden">
+      <span class="absolute top-1 left-2 text-[10px] uppercase font-bold tracking-widest text-amber-400/70">Sponsored Advertisement</span>
+      
+      <div class="flex items-center gap-3 w-full sm:w-auto mt-3 sm:mt-0">
+        <div class="w-16 h-14 bg-slate-700 rounded-lg overflow-hidden flex-shrink-0 border border-slate-600">
+          <!-- TOP AD IMAGE: Replace src with your image URL/path -->
+          <img src="https://picsum.photos/seed/adtop/120/120" alt="Special Offer" class="w-full h-full object-cover">
         </div>
-
-        <div class="fake-ad-container w-full rounded-lg border-2 border-amber-400/80 shadow-lg p-2.5 sm:px-4 sm:py-3 flex items-center justify-between gap-3 overflow-hidden">
-            <!-- Left Mock Graphic -->
-            <div class="flex items-center gap-3">
-                <img src="https://gcdnb.pbrd.co/images/WHZWeLJmOiwr.jpg" 
-                     alt="Cloud RAM Download Icon" 
-                     class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover shadow flex-shrink-0"
-                <div>
-                    <div class="flex items-center gap-1.5 mb-0.5">
-                        <span class="bg-amber-400 text-black text-[9px] font-black px-1.5 py-0.5 rounded uppercase">SPONSORED</span>
-                    </div>
-                    <h2 class="text-xs sm:text-base font-extrabold text-slate-900 leading-tight">
-                        Get Minecraft For Completely Free!!!
-                    </h2>
-                    <p class="text-[11px] text-slate-600 hidden sm:block">
-                        Not a Scam! 10% Legit.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Fake Action Button -->
-            <div class="flex flex-col items-end flex-shrink-0">
-                <button id="download-ad-btn" class="cta-pulse bg-emerald-600 hover:bg-emerald-500 text-white font-black px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg text-xs sm:text-sm uppercase tracking-wide shadow-md border-b-4 border-emerald-800">
-                    START DOWNLOAD ►
-                </button>
-                <span class="text-[9px] text-slate-400 mt-0.5">100% Virus-Free*</span>
-            </div>
+        <div>
+          <h3 class="text-xs sm:text-sm font-extrabold text-amber-300 uppercase tracking-wide">
+            ⚡ FREE 128GB CLOUD RAM UPDATE
+          </h3>
+          <p class="text-[11px] text-slate-300">
+            Speed up your Tetris drops by 990%! No hardware required.
+          </p>
         </div>
-    </header>
+      </div>
 
-    <!-- Main Content Area: Left Skyscraper + Center Game + Right Skyscraper -->
-    <main class="w-full max-w-7xl flex flex-row items-center justify-center gap-4">
-
-        <!-- Left Fake Skyscraper Banner Ad (160x600 style) -->
-        <aside class="hidden xl:flex flex-col w-44 fake-ad-container rounded-xl border border-slate-300 p-3 shadow-2xl flex-shrink-0 justify-between self-stretch">
-            <div class="flex justify-between items-center text-[10px] text-slate-500 border-b pb-1">
-                <span class="bg-yellow-400 text-black font-bold px-1 rounded text-[8px]">AD</span>
-                <span>ⓘ AdChoices</span>
-            </div>
-
-            <div class="text-center py-2">
-                <span class="badge-flash inline-block bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full mb-1">
-                    NEARBY ALERT
-            </div>
-
-            <!-- Ad Picture -->
-            <div class="bg-slate-100 rounded-lg p-2 border border-slate-200 text-center shadow-inner overflow-hidden">
-                <img src="https://gcdnb.pbrd.co/images/LDI5H23lb3sR.jpg" 
-                     alt="Single Tetromino Dating Profile" 
-                     class="w-full h-28 object-cover rounded shadow">
-                <div class="text-xs font-bold text-slate-800 mt-1.5">"Ian", 0 miles away</div>
-                <div class="text-[10px] text-emerald-600 font-semibold">● Online Now</div>
-            </div>
-
-            <div class="space-y-2 text-center mt-2">
-                <p class="text-[11px] text-slate-700 leading-tight">
-                    "Looking for a 20-year-old Filipina to date."
-                </p>
-                <button class="cta-pulse w-full bg-pink-600 hover:bg-pink-500 text-white font-extrabold py-2 px-2 rounded-lg text-xs tracking-tight shadow">
-                    MATCH NOW ❤️
-                </button>
-            </div>
-        </aside>
-
-        <!-- CENTER: The Tetris Game Card -->
-        <section class="tetris-card p-5 sm:p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-center md:items-start border border-slate-700/80 shadow-2xl">
-            
-            <!-- Canvas Board (10 cols x 20 rows at 30px per cell = 300x600) -->
-            <div class="relative rounded-lg overflow-hidden shadow-inner border border-slate-700">
-                <canvas id="tetris-canvas" width="300" height="600" class="bg-[#1a1f28]"></canvas>
-
-                <!-- Pause Menu Overlay -->
-                <div id="pause-overlay" class="absolute inset-0 bg-slate-950/85 backdrop-blur-sm flex flex-col items-center justify-center gap-4 hidden z-20">
-                    <h2 class="text-2xl font-extrabold text-amber-400 tracking-wider">GAME PAUSED</h2>
-                    <p class="text-xs text-slate-300">Take a breath or grab a snack!</p>
-                    <div class="flex flex-col gap-2.5 w-44 mt-2">
-                        <button id="resume-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold rounded-lg shadow-lg transition text-sm">
-                            Resume Game
-                        </button>
-                        <button id="pause-restart-btn" class="w-full py-2 bg-slate-700 hover:bg-slate-600 active:scale-95 text-white font-semibold rounded-lg shadow transition text-xs">
-                            Restart
-                        </button>
-                    </div>
-                    <span class="text-[11px] text-slate-400 mt-2">Press <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-600 text-white font-mono">P</kbd> or <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-600 text-white font-mono">Esc</kbd> to unpause</span>
-                </div>
-
-                <!-- Game Over Overlay -->
-                <div id="game-over-overlay" class="absolute inset-0 bg-black/85 flex flex-col items-center justify-center gap-4 hidden z-20">
-                    <h2 class="text-3xl font-extrabold text-red-500 tracking-wider">GAME OVER</h2>
-                    <p class="text-slate-300 text-sm">Final Score: <span id="final-score" class="font-bold text-white">0</span></p>
-                    <button id="restart-btn" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-semibold rounded-lg shadow-lg transition">
-                        Play Again
-                    </button>
-                </div>
-            </div>
-
-            <!-- Game Sidebar: Score, Preview, Controls -->
-            <div class="flex flex-col gap-4 w-44">
-                
-                <!-- Score Panel -->
-                <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700 text-center shadow">
-                    <span class="text-xs uppercase font-bold tracking-widest text-slate-400">Score</span>
-                    <div id="score-display" class="text-3xl font-black text-amber-400 mt-1">0</div>
-                </div>
-
-                <!-- Next Block Preview -->
-                <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700 flex flex-col items-center shadow">
-                    <span class="text-xs uppercase font-bold tracking-widest text-slate-400 mb-2">Next</span>
-                    <div class="w-[120px] h-[120px] flex items-center justify-center bg-[#1a1f28] rounded-lg border border-slate-700/60 shadow-inner">
-                        <canvas id="next-canvas" width="120" height="120"></canvas>
-                    </div>
-                </div>
-
-                <!-- Pause / Resume Button -->
-                <button id="toggle-pause-btn" class="w-full py-2 bg-amber-600 hover:bg-amber-500 active:scale-95 text-xs uppercase tracking-wider font-bold rounded-lg transition shadow flex items-center justify-center gap-1.5">
-                    <span id="pause-btn-icon">⏸</span>
-                    <span id="pause-btn-text">Pause Game</span>
-                </button>
-
-                <!-- Controls Guide -->
-                <div class="bg-slate-800/60 rounded-xl p-3 border border-slate-700 text-xs text-slate-400 space-y-1">
-                    <div class="flex justify-between"><span>← / →</span><span class="text-slate-200">Move (Hold)</span></div>
-                    <div class="flex justify-between"><span>↑</span><span class="text-slate-200">Rotate</span></div>
-                    <div class="flex justify-between"><span>↓</span><span class="text-slate-200">Soft Drop</span></div>
-                    <div class="flex justify-between"><span>Space</span><span class="text-slate-200">Hard Drop</span></div>
-                    <div class="flex justify-between"><span>P / Esc</span><span class="text-slate-200">Pause</span></div>
-                </div>
-
-                <!-- Reset Button -->
-                <button id="quick-reset-btn" class="w-full py-2 bg-slate-700 hover:bg-slate-600 active:scale-95 text-xs uppercase tracking-wider font-semibold rounded-lg transition shadow">
-                    Restart Game
-                </button>
-            </div>
-        </section>
-
-        <!-- Right Fake Skyscraper Banner Ad (160x600 style) -->
-        <aside class="hidden xl:flex flex-col w-44 fake-ad-container rounded-xl border border-slate-300 p-3 shadow-2xl flex-shrink-0 justify-between self-stretch">
-            <div class="flex justify-between items-center text-[10px] text-slate-500 border-b pb-1">
-                <span class="bg-yellow-400 text-black font-bold px-1 rounded text-[8px]">AD</span>
-                <span>ⓘ AdChoices</span>
-            </div>
-
-            <div class="text-center py-1">
-                <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded">
-                    SECRET TRICK 🤫
-                </span>
-                <h3 class="font-black text-sm text-slate-900 leading-snug mt-1">
-                    Local girl is the best girlfriend ever!
-                </h3>
-            </div>
-
-            <!-- Ad Picture -->
-            <div class="bg-slate-100 rounded-lg p-2 border border-slate-200 text-center shadow-inner overflow-hidden">
-                <img src="https://gcdnb.pbrd.co/images/gTE_dQ_azjP9.png" 
-                     alt="Best Girlfriend Ever" 
-                     class="w-full h-24 object-cover rounded shadow">
-                <div class="flex justify-center text-amber-500 text-xs mt-1">★★★★★</div>
-                <div class="text-[10px] text-slate-600 font-semibold italic mt-0.5">"Best girlfriend I've ever had. Would get again!" - Ian, 20.</div>
-            </div>
-
-            <div class="space-y-2 text-center">
-                <p class="text-[11px] text-slate-700 leading-tight">
-                    World Champions are begging to take this down. Don't let Big Tetris hide it!
-                </p>
-                <button class="cta-pulse w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2 px-2 rounded-lg text-xs uppercase tracking-tight shadow border-b-2 border-amber-700">
-                    LEARN THE SECRET →
-                </button>
-            </div>
-
-            <div class="text-[9px] text-slate-400 text-center border-t pt-1">
-                Promoted by BlockSecrets.tv
-            </div>
-        </aside>
-
-    </main>
-
-    <!-- Mobile Touch Controls -->
-    <div class="grid grid-cols-4 gap-2 mt-4 md:hidden w-full max-w-[340px]">
-        <button id="touch-left" class="btn-ctrl py-3 bg-slate-800 text-xl rounded-lg active:bg-slate-700 border border-slate-700">←</button>
-        <button id="touch-rotate" class="btn-ctrl py-3 bg-slate-800 text-xl rounded-lg active:bg-slate-700 border border-slate-700">↻</button>
-        <button id="touch-right" class="btn-ctrl py-3 bg-slate-800 text-xl rounded-lg active:bg-slate-700 border border-slate-700">→</button>
-        <button id="touch-drop" class="btn-ctrl py-3 bg-blue-600 text-sm font-bold rounded-lg active:bg-blue-500 border border-blue-500">DROP</button>
-        <button id="touch-down" class="btn-ctrl py-3 col-span-4 bg-slate-800 text-xl rounded-lg active:bg-slate-700 border border-slate-700">↓ SOFT DROP</button>
+      <button id="download-ad-btn" class="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-slate-950 font-black text-xs uppercase tracking-wider rounded-lg shadow-md transition-all active:scale-95 flex-shrink-0">
+        START DOWNLOAD ►
+      </button>
     </div>
+  </header>
 
-    <!-- Bottom Clickbait Native Ad Feed (3 humorous cards) -->
-    <section class="w-full max-w-5xl mt-6">
-        <div class="flex items-center justify-between mb-2 px-1">
-            <span class="text-xs uppercase font-extrabold tracking-widest text-slate-400 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                AROUND THE WEB (SPONSORED)
-            </span>
-            <span class="text-[10px] text-slate-500">AdChoices [x]</span>
+  <!-- MAIN LAYOUT: SKYSCRAPERS + GAME AREA -->
+  <main class="w-full max-w-6xl flex items-start justify-center gap-4 flex-1">
+
+    <!-- LEFT SKYSCRAPER AD -->
+    <aside class="hidden xl:flex flex-col gap-3 w-40 flex-shrink-0">
+      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5 text-center flex flex-col items-center">
+        <span class="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">Sponsored</span>
+        <div class="w-full h-36 bg-slate-700 rounded-lg overflow-hidden border border-slate-600 mb-2">
+          <!-- LEFT AD IMAGE 1: Replace src -->
+          <img src="https://picsum.photos/seed/blocksingles/200/300" alt="Single Tetrominoes" class="w-full h-full object-cover">
+        </div>
+        <p class="text-xs font-bold text-sky-300 leading-tight mb-1">
+          Hot Single Blocks in your area!
+        </p>
+        <p class="text-[10px] text-slate-300 mb-2">
+          Looking for a quick line clear tonight?
+        </p>
+        <button class="w-full py-1 text-[11px] font-bold bg-sky-500 hover:bg-sky-400 text-slate-950 rounded transition">
+          Chat Now
+        </button>
+      </div>
+
+      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5 text-center flex flex-col items-center">
+        <span class="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">Promotion</span>
+        <div class="w-full h-28 bg-slate-700 rounded-lg overflow-hidden border border-slate-600 mb-2">
+          <!-- LEFT AD IMAGE 2: Replace src -->
+          <img src="https://picsum.photos/seed/spinwin/200/200" alt="Lucky Spin" class="w-full h-full object-cover">
+        </div>
+        <p class="text-xs font-bold text-amber-300 leading-tight mb-2">
+          Spin to win a free I-block!
+        </p>
+        <button class="w-full py-1 text-[11px] font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 rounded transition">
+          Spin Wheel
+        </button>
+      </div>
+    </aside>
+
+    <!-- CENTER GAME CONSOLE -->
+    <section class="flex flex-col md:flex-row gap-4 items-center justify-center bg-slate-900/90 border border-slate-700/80 p-4 rounded-2xl shadow-2xl relative">
+
+      <!-- TETRIS CANVAS BOARD -->
+      <div class="relative rounded-xl overflow-hidden shadow-inner border-2 border-indigo-950 bg-[#1a1f28]">
+        <canvas id="tetris-canvas" width="300" height="600" class="block"></canvas>
+
+        <!-- PAUSE OVERLAY -->
+        <div id="pause-modal" class="absolute inset-0 bg-slate-950/85 backdrop-blur-sm hidden flex flex-col items-center justify-center gap-4 z-20">
+          <h2 class="text-2xl font-black text-amber-400 tracking-wider">GAME PAUSED</h2>
+          <div class="flex flex-col gap-2 w-48">
+            <button id="resume-btn" class="w-full py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition">
+              Resume Game
+            </button>
+            <button id="pause-restart-btn" class="w-full py-2 bg-rose-500 hover:bg-rose-400 text-white font-bold rounded-lg transition">
+              Restart
+            </button>
+          </div>
+          <span class="text-[11px] text-slate-400">Press 'P' or 'Esc' to resume</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-            
-            <!-- Clickbait Card 1 -->
-            <div class="fake-ad-container rounded-xl overflow-hidden border border-slate-300 shadow hover:shadow-lg transition cursor-pointer flex flex-col justify-between p-3">
-                <div>
-                    <div class="relative rounded-lg h-32 overflow-hidden mb-2 bg-slate-100">
-                        <img src="https://gcdnb.pbrd.co/images/M7PiKzDzBF6M.jpg" 
-                             alt="Tetris Blocks Grew Up" 
-                             class="w-full h-full object-cover">
-                        <span class="absolute top-2 right-2 bg-red-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded shadow">SHOCKING</span>
-                    </div>
-                    <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
-                        <span class="bg-amber-400 text-black px-1 rounded text-[8px] font-bold">AD</span>
-                    </div>
-                    <h4 class="font-extrabold text-xs text-slate-900 leading-snug">
-                        Look at this dog 😂😂😂😂😂
-                    </h4>
-                </div>
-                <div class="mt-2 text-[10px] text-blue-600 font-semibold flex items-center justify-between">
-                    <span>Read Full Story</span>
-                    <span>→</span>
-                </div>
-            </div>
-
-            <!-- Clickbait Card 2 -->
-            <div class="fake-ad-container rounded-xl overflow-hidden border border-slate-300 shadow hover:shadow-lg transition cursor-pointer flex flex-col justify-between p-3">
-                <div>
-                    <div class="relative rounded-lg h-32 overflow-hidden mb-2 bg-slate-100">
-                        <img src="https://placehold.co/300x180/dc2626/ffffff?text=99.8%25+Rage+Quit" 
-                             alt="Rage Quit Game Test" 
-                             class="w-full h-full object-cover">
-                        <span class="absolute top-2 right-2 bg-black/60 text-white font-mono text-[9px] px-1.5 py-0.5 rounded">TEST</span>
-                    </div>
-                    <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
-                        <span class="bg-amber-400 text-black px-1 rounded text-[8px] font-bold">AD</span>
-                        <span>BrainAge Pro Games</span>
-                    </div>
-                    <h4 class="font-extrabold text-xs text-slate-900 leading-snug">
-                        You Won't Last 5 Minutes Playing This Block Stacker Without Rage Quitting!
-                    </h4>
-                </div>
-                <div class="mt-2 text-[10px] text-blue-600 font-semibold flex items-center justify-between">
-                    <span>Play Free (No Install)</span>
-                    <span>→</span>
-                </div>
-            </div>
-
-            <!-- Clickbait Card 3 -->
-            <div class="fake-ad-container rounded-xl overflow-hidden border border-slate-300 shadow hover:shadow-lg transition cursor-pointer flex flex-col justify-between p-3 sm:col-span-2 md:col-span-1">
-                <div>
-                    <div class="relative rounded-lg h-32 overflow-hidden mb-2 bg-slate-100">
-                        <img src="https://placehold.co/300x180/0284c7/ffffff?text=Stack+Blocks+Pay+Debt" 
-                             alt="Mortgage Debt Elimination" 
-                             class="w-full h-full object-cover">
-                        <span class="absolute top-2 right-2 bg-emerald-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded shadow">NEW RULE</span>
-                    </div>
-                    <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
-                        <span class="bg-amber-400 text-black px-1 rounded text-[8px] font-bold">AD</span>
-                        <span>TetroFinancial LLC</span>
-                    </div>
-                    <h4 class="font-extrabold text-xs text-slate-900 leading-snug">
-                        Homeowners In Your County Are Stacking Blocks To Eliminate Mortgage Debt!
-                    </h4>
-                </div>
-                <div class="mt-2 text-[10px] text-blue-600 font-semibold flex items-center justify-between">
-                    <span>Check Eligibility</span>
-                    <span>→</span>
-                </div>
-            </div>
-
+        <!-- GAME OVER OVERLAY -->
+        <div id="gameover-modal" class="absolute inset-0 bg-slate-950/90 backdrop-blur-sm hidden flex flex-col items-center justify-center gap-3 z-20">
+          <h2 class="text-2xl font-black text-rose-500 tracking-wider">GAME OVER</h2>
+          <p id="gameover-score-text" class="text-sm text-slate-300">Final Score: 0</p>
+          <button id="gameover-restart-btn" class="mt-2 px-6 py-2 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-lg transition">
+            Try Again
+          </button>
         </div>
+      </div>
+
+      <!-- SIDEBAR INFO & CONTROLS -->
+      <div class="flex flex-col gap-3 w-48 sm:w-52">
+        <!-- SCORE PANEL -->
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-3 text-center">
+          <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Score (Goal: 66)</span>
+          <div id="score-display" class="text-3xl font-black text-emerald-400 mt-1">0</div>
+        </div>
+
+        <!-- NEXT PIECE PREVIEW -->
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-3 text-center flex flex-col items-center">
+          <span class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-2">Next Piece</span>
+          <div class="w-28 h-28 bg-slate-950/70 border border-slate-700 rounded-lg flex items-center justify-center overflow-hidden">
+            <canvas id="preview-canvas" width="120" height="120"></canvas>
+          </div>
+        </div>
+
+        <!-- PAUSE & RESTART CONTROLS -->
+        <div class="flex flex-col gap-2">
+          <button id="toggle-pause-btn" class="w-full py-2 px-3 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/50 text-amber-300 font-bold text-xs rounded-lg transition flex items-center justify-center gap-1.5">
+            <span id="pause-btn-icon">⏸</span>
+            <span id="pause-btn-text">Pause Game</span>
+          </button>
+          <button id="restart-btn" class="w-full py-2 px-3 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-300 font-bold text-xs rounded-lg transition">
+            ↻ Reset Board
+          </button>
+        </div>
+
+        <!-- CONTROLS GUIDE -->
+        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-2.5 text-[11px] text-slate-400 leading-relaxed">
+          <p><span class="text-slate-200 font-bold">← / →</span> : Slide Left/Right</p>
+          <p><span class="text-slate-200 font-bold">↑</span> : Rotate</p>
+          <p><span class="text-slate-200 font-bold">↓</span> : Soft Drop</p>
+          <p><span class="text-slate-200 font-bold">Space</span> : Hard Drop</p>
+          <p><span class="text-slate-200 font-bold">P / Esc</span> : Pause / Resume</p>
+        </div>
+      </div>
     </section>
 
-    <!-- Footer Disclaimer -->
-    <footer class="mt-6 text-center text-[10px] text-slate-500 max-w-xl pb-6">
-        *Disclaimer: All advertisements are entirely satirical parodies. Do not attempt to download physical RAM from the web.
-    </footer>
-
-    <!-- Fake Ad Pop-up Modal -->
-    <div id="ad-popup-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border-2 border-amber-400 rounded-2xl max-w-md w-full p-6 text-center shadow-2xl relative transform transition-all animate-bounce-short">
-            <!-- Close 'X' Button -->
-            <button id="popup-close-x" class="absolute top-3 right-3 text-slate-400 hover:text-white text-xl font-bold w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-800 transition">
-                ✕
-            </button>
-
-            <!-- Warning Icon / Header -->
-            <div class="w-16 h-16 bg-amber-500/20 text-amber-400 border border-amber-400/40 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
-                ⚠️
-            </div>
-
-            <h3 class="text-xl font-black text-white tracking-wide mb-2 uppercase">
-                Downloading 128GB Cloud RAM...
-            </h3>
-
-            <p class="text-sm text-slate-300 leading-relaxed mb-4">
-                <strong class="text-red-400">WARNING: System Overload!</strong><br>
-                Your browser is injecting high-density quantum RAM into your CPU socket. Tetris block velocity may increase by 990%!
-            </p>
-
-            <div class="bg-slate-800/80 rounded-lg p-3 text-left font-mono text-xs text-emerald-400 border border-slate-700 mb-5 space-y-1">
-                <div>> Initializing cloud memory banks... [OK]</div>
-                <div>> Bypassing physical hardware limits... [OK]</div>
-                <div>> Warning: 0 bytes downloaded (It's a fake ad!)</div>
-            </div>
-
-            <!-- Action / Dismiss Button -->
-            <button id="popup-ok-btn" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black rounded-lg uppercase tracking-wider text-sm transition shadow-lg">
-                I Understand (Close)
-            </button>
+    <!-- RIGHT SKYSCRAPER AD -->
+    <aside class="hidden xl:flex flex-col gap-3 w-40 flex-shrink-0">
+      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5 text-center flex flex-col items-center">
+        <span class="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">Viral Hack</span>
+        <div class="w-full h-36 bg-slate-700 rounded-lg overflow-hidden border border-slate-600 mb-2">
+          <!-- RIGHT AD IMAGE 1: Replace src -->
+          <img src="https://picsum.photos/seed/grandmarotate/200/300" alt="Clever Trick" class="w-full h-full object-cover">
         </div>
+        <p class="text-xs font-bold text-emerald-300 leading-tight mb-1">
+          Dentists hate this 1 weird block trick!
+        </p>
+        <p class="text-[10px] text-slate-300 mb-2">
+          Line clears guaranteed in 3 days or less.
+        </p>
+        <button class="w-full py-1 text-[11px] font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded transition">
+          Read Story
+        </button>
+      </div>
+
+      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5 text-center flex flex-col items-center">
+        <span class="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mb-1.5">Special</span>
+        <div class="w-full h-28 bg-slate-700 rounded-lg overflow-hidden border border-slate-600 mb-2">
+          <!-- RIGHT AD IMAGE 2: Replace src -->
+          <img src="https://picsum.photos/seed/cleaner/200/200" alt="PC Tool" class="w-full h-full object-cover">
+        </div>
+        <p class="text-xs font-bold text-purple-300 leading-tight mb-2">
+          Your PC is 40% full of blocks!
+        </p>
+        <button class="w-full py-1 text-[11px] font-bold bg-purple-500 hover:bg-purple-400 text-slate-950 rounded transition">
+          Scan Now
+        </button>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- BOTTOM CLICKBAIT AD GRID -->
+  <footer class="w-full max-w-5xl mt-6">
+    <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 px-1">
+      Sponsored Content Across The Web
     </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      
+      <!-- BOTTOM AD 1 -->
+      <div class="bg-slate-800/80 border border-slate-700 rounded-xl overflow-hidden hover:border-slate-500 transition cursor-pointer flex flex-col">
+        <div class="w-full h-28 bg-slate-700 overflow-hidden">
+          <!-- BOTTOM IMAGE 1: Replace src -->
+          <img src="https://picsum.photos/seed/retrogame/300/180" alt="Game Article" class="w-full h-full object-cover">
+        </div>
+        <div class="p-2.5 flex-1 flex flex-col justify-between">
+          <p class="text-xs font-bold text-slate-200 leading-snug">
+            10 Tetrominoes that aged terribly (#4 will break your heart)
+          </p>
+          <span class="text-[10px] text-slate-400 mt-2 block">BlockBuzzer • Sponsored</span>
+        </div>
+      </div>
 
-    <!-- Game Script (Complete mechanics: grid lines, DAS, lock delay, hard drop, scoring) -->
-    <script>
-        // Palette matching your previous Python colors
-        const COLORS = [
-            '#1a1f28', // 0: Empty cell background
-            '#2fe64e', // 1: L-Block (Green)
-            '#e81224', // 2: J-Block (Red)
-            '#e27411', // 3: I-Block (Orange)
-            '#edea04', // 4: O-Block (Yellow)
-            '#a600f7', // 5: S-Block (Purple)
-            '#15ccd1', // 6: T-Block (Cyan)
-            '#0d40d8'  // 7: Z-Block (Blue)
-        ];
-        const GRID_LINE_COLOR = '#2c2c7f'; // Grid separation border color
+      <!-- BOTTOM AD 2 -->
+      <div class="bg-slate-800/80 border border-slate-700 rounded-xl overflow-hidden hover:border-slate-500 transition cursor-pointer flex flex-col">
+        <div class="w-full h-28 bg-slate-700 overflow-hidden">
+          <!-- BOTTOM IMAGE 2: Replace src -->
+          <img src="https://picsum.photos/seed/insurance/300/180" alt="Insurance" class="w-full h-full object-cover">
+        </div>
+        <div class="p-2.5 flex-1 flex flex-col justify-between">
+          <p class="text-xs font-bold text-slate-200 leading-snug">
+            If you were born before 2005, you might be owed 66 free points!
+          </p>
+          <span class="text-[10px] text-slate-400 mt-2 block">National Grid Relief • Ad</span>
+        </div>
+      </div>
 
-        const ROWS = 20;
-        const COLS = 10;
-        const CELL_SIZE = 30;
+      <!-- BOTTOM AD 3 -->
+      <div class="bg-slate-800/80 border border-slate-700 rounded-xl overflow-hidden hover:border-slate-500 transition cursor-pointer flex flex-col sm:col-span-2 lg:col-span-1">
+        <div class="w-full h-28 bg-slate-700 overflow-hidden">
+          <!-- BOTTOM IMAGE 3: Replace src -->
+          <img src="https://picsum.photos/seed/goldsecret/300/180" alt="Gold Investment" class="w-full h-full object-cover">
+        </div>
+        <div class="p-2.5 flex-1 flex flex-col justify-between">
+          <p class="text-xs font-bold text-slate-200 leading-snug">
+            Why billionaires are ditching cash and stocking up on yellow O-blocks
+          </p>
+          <span class="text-[10px] text-slate-400 mt-2 block">Market Tetrimino • Sponsored</span>
+        </div>
+      </div>
 
-        // Standard 4-rotation piece matrices
-        const BLOCKS = {
-            1: { // LBlock
-                id: 1,
-                spawnOffset: { row: 0, col: 3 },
-                shapes: [
-                    [{r:0,c:2}, {r:1,c:0}, {r:1,c:1}, {r:1,c:2}],
-                    [{r:0,c:1}, {r:1,c:1}, {r:2,c:1}, {r:2,c:2}],
-                    [{r:1,c:0}, {r:1,c:1}, {r:1,c:2}, {r:2,c:0}],
-                    [{r:0,c:0}, {r:0,c:1}, {r:1,c:1}, {r:2,c:1}]
-                ]
-            },
-            2: { // JBlock
-                id: 2,
-                spawnOffset: { row: 0, col: 3 },
-                shapes: [
-                    [{r:0,c:0}, {r:1,c:0}, {r:1,c:1}, {r:1,c:2}],
-                    [{r:0,c:1}, {r:0,c:2}, {r:1,c:1}, {r:2,c:1}],
-                    [{r:1,c:0}, {r:1,c:1}, {r:1,c:2}, {r:2,c:2}],
-                    [{r:0,c:1}, {r:1,c:1}, {r:2,c:0}, {r:2,c:1}]
-                ]
-            },
-            3: { // IBlock
-                id: 3,
-                spawnOffset: { row: -1, col: 3 },
-                shapes: [
-                    [{r:1,c:0}, {r:1,c:1}, {r:1,c:2}, {r:1,c:3}],
-                    [{r:0,c:2}, {r:1,c:2}, {r:2,c:2}, {r:3,c:2}],
-                    [{r:2,c:0}, {r:2,c:1}, {r:2,c:2}, {r:2,c:3}],
-                    [{r:0,c:1}, {r:1,c:1}, {r:2,c:1}, {r:3,c:1}]
-                ]
-            },
-            4: { // OBlock
-                id: 4,
-                spawnOffset: { row: 0, col: 4 },
-                shapes: [
-                    [{r:0,c:0}, {r:0,c:1}, {r:1,c:0}, {r:1,c:1}]
-                ]
-            },
-            5: { // SBlock
-                id: 5,
-                spawnOffset: { row: 0, col: 3 },
-                shapes: [
-                    [{r:0,c:1}, {r:0,c:2}, {r:1,c:0}, {r:1,c:1}],
-                    [{r:0,c:1}, {r:1,c:1}, {r:1,c:2}, {r:2,c:2}],
-                    [{r:1,c:1}, {r:1,c:2}, {r:2,c:0}, {r:2,c:1}],
-                    [{r:0,c:0}, {r:1,c:0}, {r:1,c:1}, {r:2,c:1}]
-                ]
-            },
-            6: { // TBlock
-                id: 6,
-                spawnOffset: { row: 0, col: 3 },
-                shapes: [
-                    [{r:0,c:1}, {r:1,c:0}, {r:1,c:1}, {r:1,c:2}],
-                    [{r:0,c:1}, {r:1,c:1}, {r:1,c:2}, {r:2,c:1}],
-                    [{r:1,c:0}, {r:1,c:1}, {r:1,c:2}, {r:2,c:1}],
-                    [{r:0,c:1}, {r:1,c:0}, {r:1,c:1}, {r:2,c:1}]
-                ]
-            },
-            7: { // ZBlock
-                id: 7,
-                spawnOffset: { row: 0, col: 3 },
-                shapes: [
-                    [{r:0,c:0}, {r:0,c:1}, {r:1,c:1}, {r:1,c:2}],
-                    [{r:0,c:2}, {r:1,c:1}, {r:1,c:2}, {r:2,c:1}],
-                    [{r:1,c:0}, {r:1,c:1}, {r:2,c:1}, {r:2,c:2}],
-                    [{r:0,c:1}, {r:1,c:0}, {r:1,c:1}, {r:2,c:0}]
-                ]
-            }
+    </div>
+  </footer>
+
+  <!-- FAKE AD DOWNLOAD POPUP MODAL -->
+  <div id="ad-popup-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border-2 border-amber-500 rounded-2xl p-6 max-w-md w-full shadow-2xl relative text-center">
+      <button id="ad-popup-close-btn" class="absolute top-3 right-3 text-slate-400 hover:text-white text-xl font-bold leading-none">&times;</button>
+      <div class="text-4xl mb-2">💾</div>
+      <h3 class="text-lg font-black text-amber-400 mb-2">DOWNLOAD INITIATED...</h3>
+      <p class="text-xs text-slate-300 leading-relaxed mb-4">
+        Downloading 128 GB of premium high-frequency virtual RAM into your web browser cache. Please do not turn off your computer or the tetrominoes will fall slower!
+      </p>
+      <button id="ad-popup-ok-btn" class="w-full py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg transition text-xs">
+        I Understand (Close)
+      </button>
+    </div>
+  </div>
+
+  <!-- VICTORY MODAL (TRIGGERS AT 66 POINTS) -->
+  <div id="victory-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border-2 border-emerald-500 rounded-2xl p-6 max-w-md w-full shadow-2xl text-center text-white relative">
+      <button id="victory-close-btn" class="absolute top-3 right-3 text-slate-400 hover:text-white text-xl font-bold leading-none">&times;</button>
+      
+      <div class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 font-bold rounded-full text-xs uppercase tracking-wider mb-2">
+        Goal Reached (66 PTS)
+      </div>
+      <h2 class="text-2xl font-black mb-3 text-emerald-400">YOU WIN!</h2>
+
+      <!-- VICTORY IMAGE: Replace the src below with your custom picture URL or local image file -->
+      <div class="w-full h-52 bg-slate-800 rounded-xl border border-dashed border-slate-600 flex items-center justify-center overflow-hidden mb-4">
+        <img id="victory-image" 
+             src="https://picsum.photos/seed/victorytrophy/400/300" 
+             alt="Victory Reward" 
+             class="w-full h-full object-cover">
+      </div>
+
+      <p class="text-slate-300 text-sm mb-5 leading-relaxed">
+        Outstanding! You hit the target of 66 points.
+      </p>
+
+      <button id="victory-restart-btn" class="w-full py-2.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-lg transition shadow-lg">
+        Play Again
+      </button>
+    </div>
+  </div>
+
+  <!-- TETRIS GAME LOGIC -->
+  <script>
+    // --- COLOR PALETTE ---
+    const Colors = {
+      0: '#1a1f28', // Background / empty cell
+      1: '#2fe64e', // LBlock (Green)
+      2: '#e81224', // JBlock (Red)
+      3: '#e27411', // IBlock (Orange)
+      4: '#edea04', // OBlock (Yellow)
+      5: '#a600f7', // SBlock (Purple)
+      6: '#15ccd1', // TBlock (Cyan)
+      7: '#0d40d8', // ZBlock (Blue)
+      gridLine: '#2c2c7f' // 1px separator line color
+    };
+
+    // --- TETROMINO DEFINITIONS ---
+    const Tetrominoes = [
+      { // LBlock
+        id: 1,
+        cells: {
+          0: [{r:0, c:2}, {r:1, c:0}, {r:1, c:1}, {r:1, c:2}],
+          1: [{r:0, c:1}, {r:1, c:1}, {r:2, c:1}, {r:2, c:2}],
+          2: [{r:1, c:0}, {r:1, c:1}, {r:1, c:2}, {r:2, c:0}],
+          3: [{r:0, c:0}, {r:0, c:1}, {r:1, c:1}, {r:2, c:1}]
+        },
+        startRow: 0,
+        startCol: 3
+      },
+      { // JBlock
+        id: 2,
+        cells: {
+          0: [{r:0, c:0}, {r:1, c:0}, {r:1, c:1}, {r:1, c:2}],
+          1: [{r:0, c:1}, {r:0, c:2}, {r:1, c:1}, {r:2, c:1}],
+          2: [{r:1, c:0}, {r:1, c:1}, {r:1, c:2}, {r:2, c:2}],
+          3: [{r:0, c:1}, {r:1, c:1}, {r:2, c:0}, {r:2, c:1}]
+        },
+        startRow: 0,
+        startCol: 3
+      },
+      { // IBlock
+        id: 3,
+        cells: {
+          0: [{r:1, c:0}, {r:1, c:1}, {r:1, c:2}, {r:1, c:3}],
+          1: [{r:0, c:2}, {r:1, c:2}, {r:2, c:2}, {r:3, c:2}],
+          2: [{r:2, c:0}, {r:2, c:1}, {r:2, c:2}, {r:2, c:3}],
+          3: [{r:0, c:1}, {r:1, c:1}, {r:2, c:1}, {r:3, c:1}]
+        },
+        startRow: -1,
+        startCol: 3
+      },
+      { // OBlock
+        id: 4,
+        cells: {
+          0: [{r:0, c:0}, {r:0, c:1}, {r:1, c:0}, {r:1, c:1}]
+        },
+        startRow: 0,
+        startCol: 4
+      },
+      { // SBlock
+        id: 5,
+        cells: {
+          0: [{r:0, c:1}, {r:0, c:2}, {r:1, c:0}, {r:1, c:1}],
+          1: [{r:0, c:1}, {r:1, c:1}, {r:1, c:2}, {r:2, c:2}],
+          2: [{r:1, c:1}, {r:1, c:2}, {r:2, c:0}, {r:2, c:1}],
+          3: [{r:0, c:0}, {r:1, c:0}, {r:1, c:1}, {r:2, c:1}]
+        },
+        startRow: 0,
+        startCol: 3
+      },
+      { // TBlock
+        id: 6,
+        cells: {
+          0: [{r:0, c:1}, {r:1, c:0}, {r:1, c:1}, {r:1, c:2}],
+          1: [{r:0, c:1}, {r:1, c:1}, {r:1, c:2}, {r:2, c:1}],
+          2: [{r:1, c:0}, {r:1, c:1}, {r:1, c:2}, {r:2, c:1}],
+          3: [{r:0, c:1}, {r:1, c:0}, {r:1, c:1}, {r:2, c:1}]
+        },
+        startRow: 0,
+        startCol: 3
+      },
+      { // ZBlock
+        id: 7,
+        cells: {
+          0: [{r:0, c:0}, {r:0, c:1}, {r:1, c:1}, {r:1, c:2}],
+          1: [{r:0, c:2}, {r:1, c:1}, {r:1, c:2}, {r:2, c:1}],
+          2: [{r:1, c:0}, {r:1, c:1}, {r:2, c:1}, {r:2, c:2}],
+          3: [{r:0, c:1}, {r:1, c:0}, {r:1, c:1}, {r:2, c:0}]
+        },
+        startRow: 0,
+        startCol: 3
+      }
+    ];
+
+    class TetrisGame {
+      constructor() {
+        this.canvas = document.getElementById('tetris-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.previewCanvas = document.getElementById('preview-canvas');
+        this.previewCtx = this.previewCanvas.getContext('2d');
+
+        this.rows = 20;
+        this.cols = 10;
+        this.cellSize = 30;
+
+        this.normalSpeed = 250;
+        this.fastSpeed = 50;
+        this.currentSpeed = this.normalSpeed;
+
+        this.lockDelay = 500;
+        this.lockTimer = null;
+
+        this.score = 0;
+        this.isPaused = false;
+        this.gameOver = false;
+        this.gameWon = false;
+
+        this.grid = this.createGrid();
+        this.bag = [];
+        this.currentBlock = null;
+        this.nextBlock = null;
+
+        this.lastDropTime = performance.now();
+        this.animationFrameId = null;
+
+        // DAS (Delayed Auto Shift) key repeat system
+        this.keyStates = {};
+        this.dasDelay = 180;
+        this.dasInterval = 50;
+        this.dasTimers = {};
+
+        this.initControls();
+        this.reset();
+        this.startLoop();
+      }
+
+      createGrid() {
+        return Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
+      }
+
+      cloneBlock(def) {
+        return {
+          id: def.id,
+          cells: def.cells,
+          rotations: Object.keys(def.cells).length,
+          rotationState: 0,
+          rowOffset: def.startRow,
+          colOffset: def.startCol
         };
+      }
 
-        class Piece {
-            constructor(blockId) {
-                this.id = blockId;
-                const def = BLOCKS[blockId];
-                this.shapes = def.shapes;
-                this.rotation = 0;
-                this.row = def.spawnOffset.row;
-                this.col = def.spawnOffset.col;
-            }
+      getRandomBlock() {
+        if (this.bag.length === 0) {
+          this.bag = [...Tetrominoes];
+          // Fisher-Yates shuffle
+          for (let i = this.bag.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this.bag[i], this.bag[j]] = [this.bag[j], this.bag[i]];
+          }
+        }
+        return this.cloneBlock(this.bag.pop());
+      }
 
-            getTiles() {
-                const shape = this.shapes[this.rotation];
-                return shape.map(tile => ({
-                    row: this.row + tile.r,
-                    col: this.col + tile.c
-                }));
-            }
+      reset() {
+        this.grid = this.createGrid();
+        this.bag = [];
+        this.score = 0;
+        this.gameOver = false;
+        this.gameWon = false;
+        this.isPaused = false;
+        this.lockTimer = null;
+        this.currentSpeed = this.normalSpeed;
 
-            rotate() {
-                this.rotation = (this.rotation + 1) % this.shapes.length;
-            }
+        this.currentBlock = this.getRandomBlock();
+        this.nextBlock = this.getRandomBlock();
 
-            undoRotate() {
-                this.rotation = (this.rotation - 1 + this.shapes.length) % this.shapes.length;
+        document.getElementById('pause-modal')?.classList.add('hidden');
+        document.getElementById('gameover-modal')?.classList.add('hidden');
+        document.getElementById('victory-modal')?.classList.add('hidden');
+        this.updatePauseButtonUI();
+        this.updateScoreUI();
+      }
+
+      getCellPositions(block) {
+        const positions = block.cells[block.rotationState];
+        return positions.map(pos => ({
+          r: pos.r + block.rowOffset,
+          c: pos.c + block.colOffset
+        }));
+      }
+
+      isInside(r, c) {
+        return r >= 0 && r < this.rows && c >= 0 && c < this.cols;
+      }
+
+      isEmpty(r, c) {
+        return this.isInside(r, c) && this.grid[r][c] === 0;
+      }
+
+      blockFits(block) {
+        const cells = this.getCellPositions(block);
+        for (const cell of cells) {
+          if (!this.isInside(cell.r, cell.c) || this.grid[cell.r][cell.c] !== 0) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      canMoveDown() {
+        this.currentBlock.rowOffset += 1;
+        const fits = this.blockFits(this.currentBlock);
+        this.currentBlock.rowOffset -= 1;
+        return fits;
+      }
+
+      moveLeft() {
+        if (this.gameOver || this.isPaused || this.gameWon) return;
+        this.currentBlock.colOffset -= 1;
+        if (!this.blockFits(this.currentBlock)) {
+          this.currentBlock.colOffset += 1;
+        } else {
+          this.handleMovementInteraction();
+        }
+      }
+
+      moveRight() {
+        if (this.gameOver || this.isPaused || this.gameWon) return;
+        this.currentBlock.colOffset += 1;
+        if (!this.blockFits(this.currentBlock)) {
+          this.currentBlock.colOffset -= 1;
+        } else {
+          this.handleMovementInteraction();
+        }
+      }
+
+      rotate() {
+        if (this.gameOver || this.isPaused || this.gameWon) return;
+        const originalRotation = this.currentBlock.rotationState;
+        this.currentBlock.rotationState = (this.currentBlock.rotationState + 1) % this.currentBlock.rotations;
+        
+        // Basic wall kicks (slide left or right if colliding with wall or pieces)
+        if (!this.blockFits(this.currentBlock)) {
+          this.currentBlock.colOffset += 1; // Try nudge right
+          if (!this.blockFits(this.currentBlock)) {
+            this.currentBlock.colOffset -= 2; // Try nudge left
+            if (!this.blockFits(this.currentBlock)) {
+              this.currentBlock.colOffset += 1; // Revert shift
+              this.currentBlock.rotationState = originalRotation; // Revert rotation
+              return;
             }
+          }
+        }
+        this.handleMovementInteraction();
+      }
+
+      moveDown() {
+        if (this.gameOver || this.isPaused || this.gameWon) return;
+        if (this.canMoveDown()) {
+          this.currentBlock.rowOffset += 1;
+          this.lockTimer = null;
+        } else {
+          if (this.lockTimer === null) {
+            this.lockTimer = performance.now();
+          }
+        }
+      }
+
+      hardDrop() {
+        if (this.gameOver || this.isPaused || this.gameWon) return;
+        while (this.canMoveDown()) {
+          this.currentBlock.rowOffset += 1;
+        }
+        this.lockBlock();
+      }
+
+      handleMovementInteraction() {
+        if (!this.canMoveDown()) {
+          // Reset lock delay timer so player can slide or tuck
+          this.lockTimer = performance.now();
+        } else {
+          this.lockTimer = null;
+        }
+      }
+
+      lockBlock() {
+        const cells = this.getCellPositions(this.currentBlock);
+        for (const cell of cells) {
+          if (cell.r >= 0 && cell.r < this.rows) {
+            this.grid[cell.r][cell.c] = this.currentBlock.id;
+          }
         }
 
-        class TetrisGame {
-            constructor() {
-                this.canvas = document.getElementById('tetris-canvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.nextCanvas = document.getElementById('next-canvas');
-                this.nextCtx = this.nextCanvas.getContext('2d');
+        const clearedLines = this.clearLines();
+        this.updateScore(clearedLines);
 
-                this.scoreDisplay = document.getElementById('score-display');
-                this.finalScore = document.getElementById('final-score');
-                this.gameOverOverlay = document.getElementById('game-over-overlay');
-                this.pauseOverlay = document.getElementById('pause-overlay');
-                this.pauseBtn = document.getElementById('toggle-pause-btn');
-                this.pauseBtnText = document.getElementById('pause-btn-text');
-                this.pauseBtnIcon = document.getElementById('pause-btn-icon');
+        this.currentBlock = this.nextBlock;
+        this.nextBlock = this.getRandomBlock();
+        this.lockTimer = null;
 
-                this.bag = [];
-                this.init();
-            }
+        // Check for Game Over immediately on piece spawn
+        if (!this.blockFits(this.currentBlock)) {
+          this.triggerGameOver();
+        }
+      }
 
-            init() {
-                this.grid = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
-                this.score = 0;
-                this.gameOver = false;
-                this.isPaused = false;
-                this.bag = [];
+      clearLines() {
+        let cleared = 0;
+        for (let r = this.rows - 1; r >= 0; r--) {
+          if (this.grid[r].every(val => val !== 0)) {
+            this.grid.splice(r, 1);
+            this.grid.unshift(Array(this.cols).fill(0));
+            cleared++;
+            r++; // Recheck same row index after array shift
+          }
+        }
+        return cleared;
+      }
 
-                this.currentPiece = this.nextRandomPiece();
-                this.nextPiece = this.nextRandomPiece();
+      // --- CUSTOM SCORING & 66-POINT VICTORY LOGIC ---
+      updateScore(linesCleared) {
+        if (linesCleared === 0) return;
 
-                this.normalDropInterval = 300; // ms per drop
-                this.fastDropInterval = 50;   // ms on soft drop
-                this.dropInterval = this.normalDropInterval;
-                this.lastDropTime = performance.now();
-
-                // Lock delay state
-                this.lockDelay = 500; // ms
-                this.lockTimerStart = null;
-                this.remainingLockDelay = this.lockDelay;
-
-                this.scoreDisplay.textContent = '0';
-                this.gameOverOverlay.classList.add('hidden');
-                this.pauseOverlay.classList.add('hidden');
-                this.updatePauseButtonUI();
-                this.drawNextPiece();
-            }
-
-            togglePause() {
-                if (this.gameOver) return;
-
-                this.isPaused = !this.isPaused;
-                if (this.isPaused) {
-                    this.pauseOverlay.classList.remove('hidden');
-                    // Store elapsed lock delay to resume fairly
-                    if (this.lockTimerStart !== null) {
-                        const elapsed = performance.now() - this.lockTimerStart;
-                        this.remainingLockDelay = Math.max(0, this.lockDelay - elapsed);
-                    }
-                } else {
-                    this.pauseOverlay.classList.add('hidden');
-                    // Reset interval base and lock timer to current time
-                    this.lastDropTime = performance.now();
-                    if (this.lockTimerStart !== null) {
-                        this.lockTimerStart = performance.now() - (this.lockDelay - this.remainingLockDelay);
-                    }
-                }
-                this.updatePauseButtonUI();
-            }
-
-            updatePauseButtonUI() {
-                if (this.pauseBtnIcon && this.pauseBtnText) {
-                    if (this.isPaused) {
-                        this.pauseBtnIcon.textContent = '▶';
-                        this.pauseBtnText.textContent = 'Resume Game';
-                    } else {
-                        this.pauseBtnIcon.textContent = '⏸';
-                        this.pauseBtnText.textContent = 'Pause Game';
-                    }
-                } else if (this.pauseBtn) {
-                    this.pauseBtn.textContent = this.isPaused ? '▶ Resume Game' : '⏸ Pause Game';
-                }
-            }
-
-            nextRandomPiece() {
-                if (this.bag.length === 0) {
-                    this.bag = [1, 2, 3, 4, 5, 6, 7];
-                    for (let i = this.bag.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [this.bag[i], this.bag[j]] = [this.bag[j], this.bag[i]];
-                    }
-                }
-                return new Piece(this.bag.pop());
-            }
-
-            isValid(piece) {
-                const tiles = piece.getTiles();
-                for (let t of tiles) {
-                    if (t.col < 0 || t.col >= COLS || t.row >= ROWS) {
-                        return false;
-                    }
-                    if (t.row >= 0 && this.grid[t.row][t.col] !== 0) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            canMoveDown() {
-                this.currentPiece.row += 1;
-                const fits = this.isValid(this.currentPiece);
-                this.currentPiece.row -= 1;
-                return fits;
-            }
-
-            moveLeft() {
-                if (this.gameOver || this.isPaused) return;
-                this.currentPiece.col -= 1;
-                if (!this.isValid(this.currentPiece)) {
-                    this.currentPiece.col += 1;
-                } else {
-                    this.handlePieceInteraction();
-                }
-            }
-
-            moveRight() {
-                if (this.gameOver || this.isPaused) return;
-                this.currentPiece.col += 1;
-                if (!this.isValid(this.currentPiece)) {
-                    this.currentPiece.col -= 1;
-                } else {
-                    this.handlePieceInteraction();
-                }
-            }
-
-            rotate() {
-                if (this.gameOver || this.isPaused) return;
-                this.currentPiece.rotate();
-                if (!this.isValid(this.currentPiece)) {
-                    // Quick wall-kick helper: shift 1 left or 1 right
-                    this.currentPiece.col += 1;
-                    if (!this.isValid(this.currentPiece)) {
-                        this.currentPiece.col -= 2;
-                        if (!this.isValid(this.currentPiece)) {
-                            this.currentPiece.col += 1;
-                            this.currentPiece.undoRotate();
-                            return;
-                        }
-                    }
-                }
-                this.handlePieceInteraction();
-            }
-
-            handlePieceInteraction() {
-                if (!this.canMoveDown()) {
-                    this.lockTimerStart = performance.now();
-                } else {
-                    this.lockTimerStart = null;
-                }
-            }
-
-            moveDown() {
-                if (this.gameOver || this.isPaused) return;
-                if (this.canMoveDown()) {
-                    this.currentPiece.row += 1;
-                    this.lockTimerStart = null;
-                } else {
-                    if (this.lockTimerStart === null) {
-                        this.lockTimerStart = performance.now();
-                    }
-                }
-            }
-
-            hardDrop() {
-                if (this.gameOver || this.isPaused) return;
-                while (this.canMoveDown()) {
-                    this.currentPiece.row += 1;
-                }
-                this.lockPiece();
-            }
-
-            lockPiece() {
-                const tiles = this.currentPiece.getTiles();
-                for (let t of tiles) {
-                    if (t.row >= 0 && t.row < ROWS && t.col >= 0 && t.col < COLS) {
-                        this.grid[t.row][t.col] = this.currentPiece.id;
-                    }
-                }
-
-                this.clearLines();
-                this.currentPiece = this.nextPiece;
-                this.nextPiece = this.nextRandomPiece();
-                this.lockTimerStart = null;
-                this.drawNextPiece();
-
-                if (!this.isValid(this.currentPiece)) {
-                    this.gameOver = true;
-                    this.finalScore.textContent = this.score;
-                    this.gameOverOverlay.classList.remove('hidden');
-                }
-            }
-
-            clearLines() {
-                let lines = 0;
-                for (let r = ROWS - 1; r >= 0; r--) {
-                    if (this.grid[r].every(c => c !== 0)) {
-                        this.grid.splice(r, 1);
-                        this.grid.unshift(Array(COLS).fill(0));
-                        lines++;
-                        r++;
-                    }
-                }
-                if (lines > 0) {
-                    const points = { 1: 100, 2: 300, 3: 500, 4: 800 };
-                    this.score += points[lines] || (lines * 200);
-                    this.scoreDisplay.textContent = this.score;
-                }
-            }
-
-            update(now) {
-                if (this.gameOver || this.isPaused) return;
-
-                if (now - this.lastDropTime > this.dropInterval) {
-                    this.moveDown();
-                    this.lastDropTime = now;
-                }
-
-                if (this.lockTimerStart !== null) {
-                    if (this.canMoveDown()) {
-                        this.lockTimerStart = null;
-                    } else if (now - this.lockTimerStart >= this.lockDelay) {
-                        this.lockPiece();
-                    }
-                }
-            }
-
-            draw() {
-                const ctx = this.ctx;
-                ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-                // Grid background / line outline color
-                ctx.fillStyle = GRID_LINE_COLOR;
-                ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-                // Draw cells with 1px border spacing
-                for (let r = 0; r < ROWS; r++) {
-                    for (let c = 0; c < COLS; c++) {
-                        const val = this.grid[r][c];
-                        ctx.fillStyle = COLORS[val];
-                        ctx.fillRect(c * CELL_SIZE + 1, r * CELL_SIZE + 1, CELL_SIZE - 1, CELL_SIZE - 1);
-                    }
-                }
-
-                // Draw falling block
-                if (!this.gameOver && this.currentPiece) {
-                    ctx.fillStyle = COLORS[this.currentPiece.id];
-                    const tiles = this.currentPiece.getTiles();
-                    for (let t of tiles) {
-                        if (t.row >= 0) {
-                            ctx.fillRect(t.col * CELL_SIZE + 1, t.row * CELL_SIZE + 1, CELL_SIZE - 1, CELL_SIZE - 1);
-                        }
-                    }
-                }
-            }
-
-            drawNextPiece() {
-                const ctx = this.nextCtx;
-                ctx.clearRect(0, 0, this.nextCanvas.width, this.nextCanvas.height);
-
-                if (!this.nextPiece) return;
-
-                const shape = this.nextPiece.shapes[0];
-                const pieceSize = 22;
-
-                let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
-                shape.forEach(t => {
-                    minR = Math.min(minR, t.r);
-                    maxR = Math.max(maxR, t.r);
-                    minC = Math.min(minC, t.c);
-                    maxC = Math.max(maxC, t.c);
-                });
-
-                const w = (maxC - minC + 1) * pieceSize;
-                const h = (maxR - minR + 1) * pieceSize;
-                const startX = (120 - w) / 2 - minC * pieceSize;
-                const startY = (120 - h) / 2 - minR * pieceSize;
-
-                ctx.fillStyle = COLORS[this.nextPiece.id];
-                shape.forEach(t => {
-                    ctx.fillRect(
-                        Math.round(startX + t.c * pieceSize + 1),
-                        Math.round(startY + t.r * pieceSize + 1),
-                        pieceSize - 1,
-                        pieceSize - 1
-                    );
-                });
-            }
+        // A Tetris (4 lines) gives 66 points immediately; otherwise +11 per row
+        if (linesCleared === 4) {
+          this.score = 66;
+        } else {
+          this.score += linesCleared * 11;
         }
 
-        const game = new TetrisGame();
+        // Cap at 66 and trigger the popup
+        if (this.score >= 66) {
+          this.score = 66;
+          this.triggerVictory();
+        }
 
-        // -------------------------------------------------------------
-        // Keyboard Controls with DAS (Delayed Auto Shift)
-        // -------------------------------------------------------------
-        const keysHeld = {};
-        const dasTimers = {};
-        const DAS_INITIAL_DELAY = 180; // ms delay before continuous repeat
-        const DAS_REPEAT_RATE = 50;    // ms between shifts while holding
+        this.updateScoreUI();
+      }
 
-        function startKeyAction(key, action) {
+      updateScoreUI() {
+        const el = document.getElementById('score-display');
+        if (el) el.textContent = this.score;
+      }
+
+      triggerVictory() {
+        this.gameWon = true;
+        this.lockTimer = null;
+        const modal = document.getElementById('victory-modal');
+        if (modal) modal.classList.remove('hidden');
+      }
+
+      triggerGameOver() {
+        this.gameOver = true;
+        this.lockTimer = null;
+        const scoreText = document.getElementById('gameover-score-text');
+        if (scoreText) scoreText.textContent = `Final Score: ${this.score}`;
+        const modal = document.getElementById('gameover-modal');
+        if (modal) modal.classList.remove('hidden');
+      }
+
+      togglePause() {
+        if (this.gameOver || this.gameWon) return;
+        this.isPaused = !this.isPaused;
+        const modal = document.getElementById('pause-modal');
+        if (modal) {
+          modal.classList.toggle('hidden', !this.isPaused);
+        }
+        this.updatePauseButtonUI();
+        if (!this.isPaused) {
+          this.lastDropTime = performance.now();
+        }
+      }
+
+      updatePauseButtonUI() {
+        const icon = document.getElementById('pause-btn-icon');
+        const text = document.getElementById('pause-btn-text');
+        if (icon && text) {
+          icon.textContent = this.isPaused ? '▶' : '⏸';
+          text.textContent = this.isPaused ? 'Resume Game' : 'Pause Game';
+        }
+      }
+
+      // --- DAS (DELAYED AUTO-SHIFT) REPEAT LOGIC ---
+      startKeyRepeat(key, action) {
+        if (this.dasTimers[key]) return;
+        action();
+        this.dasTimers[key] = setTimeout(() => {
+          this.dasTimers[key] = setInterval(() => {
             action();
-            dasTimers[key] = setTimeout(() => {
-                dasTimers[key] = setInterval(action, DAS_REPEAT_RATE);
-            }, DAS_INITIAL_DELAY);
-        }
+          }, this.dasInterval);
+        }, this.dasDelay);
+      }
 
-        function clearKeyAction(key) {
-            clearTimeout(dasTimers[key]);
-            clearInterval(dasTimers[key]);
-            delete dasTimers[key];
+      stopKeyRepeat(key) {
+        if (this.dasTimers[key]) {
+          clearTimeout(this.dasTimers[key]);
+          clearInterval(this.dasTimers[key]);
+          delete this.dasTimers[key];
         }
+      }
 
+      initControls() {
         window.addEventListener('keydown', (e) => {
-            // Handle pause hotkeys
-            if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
-                e.preventDefault();
-                game.togglePause();
-                return;
+          if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+            e.preventDefault();
+          }
+
+          if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
+            this.togglePause();
+            return;
+          }
+
+          if (this.isPaused || this.gameOver || this.gameWon) return;
+
+          if (e.key === 'ArrowLeft') {
+            this.startKeyRepeat('ArrowLeft', () => this.moveLeft());
+          } else if (e.key === 'ArrowRight') {
+            this.startKeyRepeat('ArrowRight', () => this.moveRight());
+          } else if (e.key === 'ArrowUp') {
+            if (!this.keyStates['ArrowUp']) {
+              this.rotate();
+              this.keyStates['ArrowUp'] = true;
             }
-
-            if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)) {
-                e.preventDefault();
+          } else if (e.key === 'ArrowDown') {
+            this.currentSpeed = this.fastSpeed;
+            if (!this.keyStates['ArrowDown']) {
+              this.moveDown();
+              this.keyStates['ArrowDown'] = true;
             }
-
-            if (game.gameOver) {
-                if (e.key === ' ' || e.key === 'Enter') {
-                    game.init();
-                }
-                return;
+          } else if (e.key === ' ') {
+            if (!this.keyStates[' ']) {
+              this.hardDrop();
+              this.keyStates[' '] = true;
             }
-
-            if (game.isPaused) return;
-
-            if (keysHeld[e.key]) return;
-            keysHeld[e.key] = true;
-
-            if (e.key === 'ArrowLeft') {
-                startKeyAction('ArrowLeft', () => game.moveLeft());
-            } else if (e.key === 'ArrowRight') {
-                startKeyAction('ArrowRight', () => game.moveRight());
-            } else if (e.key === 'ArrowUp') {
-                game.rotate();
-            } else if (e.key === 'ArrowDown') {
-                game.dropInterval = game.fastDropInterval;
-                game.moveDown();
-            } else if (e.key === ' ') {
-                game.hardDrop();
-            }
+          }
         });
 
         window.addEventListener('keyup', (e) => {
-            keysHeld[e.key] = false;
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                clearKeyAction(e.key);
-            } else if (e.key === 'ArrowDown') {
-                game.dropInterval = game.normalDropInterval;
-            }
+          this.keyStates[e.key] = false;
+          if (e.key === 'ArrowLeft') {
+            this.stopKeyRepeat('ArrowLeft');
+          } else if (e.key === 'ArrowRight') {
+            this.stopKeyRepeat('ArrowRight');
+          } else if (e.key === 'ArrowDown') {
+            this.currentSpeed = this.normalSpeed;
+          }
         });
 
-        // UI Pause & Reset buttons
-        const togglePauseBtn = document.getElementById('toggle-pause-btn');
-        if (togglePauseBtn) {
-            togglePauseBtn.addEventListener('click', () => game.togglePause());
-        }
-        document.getElementById('resume-btn').addEventListener('click', () => game.togglePause());
-        document.getElementById('pause-restart-btn').addEventListener('click', () => game.init());
-        document.getElementById('restart-btn').addEventListener('click', () => game.init());
-        document.getElementById('quick-reset-btn').addEventListener('click', () => game.init());
+        // UI Button clicks
+        document.getElementById('toggle-pause-btn')?.addEventListener('click', () => this.togglePause());
+        document.getElementById('resume-btn')?.addEventListener('click', () => this.togglePause());
+        document.getElementById('restart-btn')?.addEventListener('click', () => this.reset());
+        document.getElementById('pause-restart-btn')?.addEventListener('click', () => this.reset());
+        document.getElementById('gameover-restart-btn')?.addEventListener('click', () => this.reset());
 
-        // Fake Ad Pop-up Logic
-        const downloadBtn = document.getElementById('download-ad-btn');
-        const adModal = document.getElementById('ad-popup-modal');
-        const popupCloseX = document.getElementById('popup-close-x');
-        const popupOkBtn = document.getElementById('popup-ok-btn');
+        // Victory modal buttons
+        document.getElementById('victory-close-btn')?.addEventListener('click', () => {
+          document.getElementById('victory-modal')?.classList.add('hidden');
+        });
+        document.getElementById('victory-restart-btn')?.addEventListener('click', () => {
+          this.reset();
+        });
 
-        function openAdModal() {
-            adModal.classList.remove('hidden');
-        }
+        // Ad Popup handlers
+        document.getElementById('download-ad-btn')?.addEventListener('click', () => {
+          document.getElementById('ad-popup-modal')?.classList.remove('hidden');
+        });
+        document.getElementById('ad-popup-close-btn')?.addEventListener('click', () => {
+          document.getElementById('ad-popup-modal')?.classList.add('hidden');
+        });
+        document.getElementById('ad-popup-ok-btn')?.addEventListener('click', () => {
+          document.getElementById('ad-popup-modal')?.classList.add('hidden');
+        });
+      }
 
-        function closeAdModal() {
-            adModal.classList.add('hidden');
-        }
-
-        if (downloadBtn) {
-            downloadBtn.addEventListener('click', openAdModal);
-        }
-        if (popupCloseX) {
-            popupCloseX.addEventListener('click', closeAdModal);
-        }
-        if (popupOkBtn) {
-            popupOkBtn.addEventListener('click', closeAdModal);
-        }
-        // Close modal if user clicks outside of the dialogue box
-        if (adModal) {
-            adModal.addEventListener('click', (e) => {
-                if (e.target === adModal) {
-                    closeAdModal();
-                }
-            });
-        }
-
-        // Mobile touch controls
-        const bindTouch = (id, onStart, onEnd) => {
-            const btn = document.getElementById(id);
-            btn.addEventListener('touchstart', (e) => { e.preventDefault(); onStart(); });
-            if (onEnd) {
-                btn.addEventListener('touchend', (e) => { e.preventDefault(); onEnd(); });
+      // --- RENDER LOOP ---
+      startLoop() {
+        const loop = (currentTime) => {
+          if (!this.isPaused && !this.gameOver && !this.gameWon) {
+            // Lock delay check
+            if (this.lockTimer !== null) {
+              if (currentTime - this.lockTimer >= this.lockDelay) {
+                this.lockBlock();
+              }
             }
+
+            // Normal gravity drop check
+            if (currentTime - this.lastDropTime >= this.currentSpeed) {
+              this.moveDown();
+              this.lastDropTime = currentTime;
+            }
+          }
+
+          this.draw();
+          this.drawPreview();
+          this.animationFrameId = requestAnimationFrame(loop);
         };
+        this.animationFrameId = requestAnimationFrame(loop);
+      }
 
-        bindTouch('touch-left', () => game.moveLeft());
-        bindTouch('touch-right', () => game.moveRight());
-        bindTouch('touch-rotate', () => game.rotate());
-        bindTouch('touch-drop', () => game.hardDrop());
-        bindTouch('touch-down', 
-            () => { game.dropInterval = game.fastDropInterval; game.moveDown(); },
-            () => { game.dropInterval = game.normalDropInterval; }
-        );
+      draw() {
+        // Draw background grid base
+        this.ctx.fillStyle = Colors.gridLine;
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // -------------------------------------------------------------
-        // Main Animation Loop
-        // -------------------------------------------------------------
-        function gameLoop(now) {
-            game.update(now);
-            game.draw();
-            requestAnimationFrame(gameLoop);
+        // Draw cells leaving 1px gap for separation lines
+        for (let r = 0; r < this.rows; r++) {
+          for (let c = 0; c < this.cols; c++) {
+            const cellValue = this.grid[r][c];
+            this.ctx.fillStyle = Colors[cellValue];
+            this.ctx.fillRect(
+              c * this.cellSize + 1,
+              r * this.cellSize + 1,
+              this.cellSize - 1,
+              this.cellSize - 1
+            );
+          }
         }
 
-        window.onload = function() {
-            requestAnimationFrame(gameLoop);
-        };
-    </script>
+        // Draw active falling block
+        if (this.currentBlock && !this.gameOver) {
+          const cells = this.getCellPositions(this.currentBlock);
+          this.ctx.fillStyle = Colors[this.currentBlock.id];
+          for (const cell of cells) {
+            if (cell.r >= 0) {
+              this.ctx.fillRect(
+                cell.c * this.cellSize + 1,
+                cell.r * this.cellSize + 1,
+                this.cellSize - 1,
+                this.cellSize - 1
+              );
+            }
+          }
+        }
+      }
+
+      drawPreview() {
+        this.previewCtx.clearRect(0, 0, this.previewCanvas.width, this.previewCanvas.height);
+        if (!this.nextBlock) return;
+
+        const cells = this.nextBlock.cells[0];
+        const previewCellSize = 22;
+        this.previewCtx.fillStyle = Colors[this.nextBlock.id];
+
+        // Center calculation based on tetromino dimension
+        let offsetX = 28;
+        let offsetY = 28;
+        if (this.nextBlock.id === 3) { // I-Block
+          offsetX = 17;
+          offsetY = 17;
+        } else if (this.nextBlock.id === 4) { // O-Block
+          offsetX = 38;
+          offsetY = 38;
+        }
+
+        for (const cell of cells) {
+          this.previewCtx.fillRect(
+            offsetX + cell.c * previewCellSize + 1,
+            offsetY + cell.r * previewCellSize + 1,
+            previewCellSize - 1,
+            previewCellSize - 1
+          );
+        }
+      }
+    }
+
+    // Initialize game when page loads
+    window.addEventListener('DOMContentLoaded', () => {
+      window.game = new TetrisGame();
+    });
+  </script>
 </body>
 </html>
