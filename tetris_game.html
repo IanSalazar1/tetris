@@ -123,7 +123,7 @@
       <div class="flex flex-col gap-3 w-48 sm:w-52">
         <!-- SCORE PANEL -->
         <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-3 text-center">
-          <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Score (Goal: 66)</span>
+          <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Score (Goal: 64)</span>
           <div id="score-display" class="text-3xl font-black text-emerald-400 mt-1">0</div>
         </div>
 
@@ -557,14 +557,14 @@
 
         // A Tetris (4 lines) gives 66 points immediately; otherwise +11 per row
         if (linesCleared === 4) {
-          this.score = 66;
+          this.score = 64;
         } else {
-          this.score += linesCleared * 11;
+          this.score += linesCleared * 8;
         }
 
         // Cap at 66 and trigger the popup
-        if (this.score >= 66) {
-          this.score = 66;
+        if (this.score >= 64) {
+          this.score = 64;
           this.triggerVictory();
         }
 
